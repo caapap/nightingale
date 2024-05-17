@@ -30,7 +30,7 @@ build-cli:
 
 run:
 	#nohup ./n9e > n9e.log 2>&1 &
-	./n9e 2>&1 | tee n9e.log
+	./n9e 2>&1 | tee /dev/tty
 
 run-alert:
 	nohup ./n9e-alert > n9e-alert.log 2>&1 &
