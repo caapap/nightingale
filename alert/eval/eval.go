@@ -128,10 +128,37 @@ func (arw *AlertRuleWorker) Eval() {
 		return
 	}
 
-	for _, point := range recoverPoints {
-		str := fmt.Sprintf("%v", point.Value)
-		arw.processor.RecoverSingle(process.Hash(cachedRule.Id, arw.processor.DatasourceId(), point), point.Timestamp, &str)
+	if arw.inhibit {
+		pointsMap := make(map[string]common.AnomalyPoint)
+		for _, point := range recoverPoints {
+			// 对于恢复的事件，合并处理
+			tagHash := process.TagHash(point)
+
+			p, exists := pointsMap[tagHash]
+			if !exists {
+				pointsMap[tagHash] = point
+				continue
+			}
+
+			if p.Severity > point.Severity {
+				hash := process.Hash(cachedRule.Id, arw.processor.DatasourceId(), p)
+				arw.processor.DeleteProcessEvent(hash)
+
+				pointsMap[tagHash] = point
+			}
+		}
+
+		for _, point := range pointsMap {
+			str := fmt.Sprintf("%v", point.Value)
+			arw.processor.RecoverSingle(process.Hash(cachedRule.Id, arw.processor.DatasourceId(), point), point.Timestamp, &str)
+		}
+	} else {
+		for _, point := range recoverPoints {
+			str := fmt.Sprintf("%v", point.Value)
+			arw.processor.RecoverSingle(process.Hash(cachedRule.Id, arw.processor.DatasourceId(), point), point.Timestamp, &str)
+		}
 	}
+
 	arw.processor.Handle(anomalyPoints, "inner", arw.inhibit)
 }
 
@@ -192,7 +219,6 @@ func (arw *AlertRuleWorker) GetPromAnomalyPoint(ruleConfig string) []common.Anom
 			logger.Errorf("rule_eval:%s promql:%s, warnings:%v", arw.Key(), promql, warnings)
 			arw.processor.Stats.CounterQueryDataErrorTotal.WithLabelValues(fmt.Sprintf("%d", arw.datasourceId)).Inc()
 			arw.processor.Stats.CounterRuleEvalErrorTotal.WithLabelValues(fmt.Sprintf("%v", arw.processor.DatasourceId()), QUERY_DATA).Inc()
-			continue
 		}
 
 		logger.Debugf("rule_eval:%s query:%+v, value:%v", arw.Key(), query, value)
