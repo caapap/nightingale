@@ -11,9 +11,9 @@ echo "tag: ${tag}"
 rm -rf n9e pub
 cp ../n9e .
 
-docker build -t nightingale:${tag} .
+docker build -t stellar:${tag} .
 
-docker tag nightingale:${tag} ulric2019/nightingale:${tag}
-docker push ulric2019/nightingale:${tag}
+docker tag stellar:${tag} docker.kxdigit.com/kxdigit/stellar:${tag}
+docker push docker.kxdigit.com/kxdigit/stellar:${tag}
 
 rm -rf n9e pub
