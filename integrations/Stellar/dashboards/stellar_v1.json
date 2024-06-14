@@ -1,6 +1,7 @@
 {
+    "id": 0,
+    "group_id": 0,
     "name": "stellar v1",
-    "tags": "",
     "ident": "",
     "configs": {
         "panels": [
@@ -255,5 +256,11 @@
             }
         ],
         "version": "3.0.0"
-    }
+    },
+    "public": 0,
+    "public_cate": 0,
+    "bgids": null,
+    "built_in": 0,
+    "hide": 0,
+    "uuid": 1717556328165924000
 }
