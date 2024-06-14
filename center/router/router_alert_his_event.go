@@ -83,24 +83,40 @@ func (rt *Router) alertHisEventGet(c *gin.Context) {
 		ginx.Bomb(404, "No such alert event")
 	}
 
+	if !rt.Center.AnonymousAccess.AlertDetail && rt.Center.EventHistoryGroupView {
+		rt.bgroCheck(c, event.GroupId)
+	}
+
 	ginx.NewRender(c).Data(event, err)
 }
 
 func GetBusinessGroupIds(c *gin.Context, ctx *ctx.Context, eventHistoryGroupView bool) ([]int64, error) {
 	bgid := ginx.QueryInt64(c, "bgid", 0)
 	var bgids []int64
-	if !eventHistoryGroupView {
+
+	if !eventHistoryGroupView || strings.HasPrefix(c.Request.URL.Path, "/v1") {
 		if bgid > 0 {
 			return []int64{bgid}, nil
 		}
 		return bgids, nil
 	}
 
-	// Description opens events that are only allowed to view user business groups ↓
-	userid := c.MustGet("userid").(int64)
-	bussGroupIds, err := models.MyBusiGroupIds(ctx, userid)
+	user := c.MustGet("user").(*models.User)
+	if user.IsAdmin() {
+		if bgid > 0 {
+			return []int64{bgid}, nil
+		}
+		return bgids, nil
+	}
+
+	bussGroupIds, err := models.MyBusiGroupIds(ctx, user.Id)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(bussGroupIds) == 0 {
+		// 如果没查到用户属于任何业务组，需要返回一个0，否则会导致查询到全部告警历史
+		return []int64{0}, nil
 	}
 
 	if bgid > 0 && !slices.Contains(bussGroupIds, bgid) {

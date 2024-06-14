@@ -7,387 +7,61 @@
             0
         ],
         "cluster": "",
-        "name": "CephErrorState",
-        "note": "Ceph is in Error state longer than 5m, please check status of pools and OSDs",
+        "name": "Kafka active controller 数目异常",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 1,
-        "severities": [
-            1
-        ],
-        "disabled": 1,
-        "prom_for_duration": 300,
-        "prom_ql": "ceph_health_status \u003e 1",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_health_status \u003e 1",
-                    "severity": 1
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327313004000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephOsdReweighted",
-        "note": "OSD {{ $labels.ceph_daemon}} on cluster {{ $labels.cluster}} was reweighted for too long. Please either create silent or fix that issue",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 2,
+        "severity": 0,
         "severities": [
             2
         ],
-        "disabled": 1,
-        "prom_for_duration": 3600,
-        "prom_ql": "ceph_osd_weight \u003c 1",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_osd_weight \u003c 1",
-                    "severity": 2
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327313504000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephOSDUtilizatoin",
-        "note": "Osd free space for  {{ $labels.osd }} is higher tan 90%. Please validate why its so big, reweight or add storage",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 1,
-        "severities": [
-            1
-        ],
-        "disabled": 1,
+        "disabled": 0,
         "prom_for_duration": 60,
-        "prom_ql": "ceph_osd_utilization \u003e 90",
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
             "queries": [
                 {
-                    "prom_ql": "ceph_osd_utilization \u003e 90",
-                    "severity": 1
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327314160000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephPgActivating",
-        "note": "Some groups are activating for too long on {{ $labels.cluster }}. Those PGs are unavailable for too long!",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 1,
-        "severities": [
-            1
-        ],
-        "disabled": 1,
-        "prom_for_duration": 300,
-        "prom_ql": "ceph_pg_activating \u003e 0",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_pg_activating \u003e 0",
-                    "severity": 1
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327314779000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephPgBackfillTooFull",
-        "note": "Some groups are located on full OSD on cluster {{ $labels.cluster }}. Those PGs can be unavailable shortly. Please check OSDs, change weight or reconfigure CRUSH rules.",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 2,
-        "severities": [
-            2
-        ],
-        "disabled": 1,
-        "prom_for_duration": 300,
-        "prom_ql": "ceph_pg_backfill_toofull \u003e 0",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_pg_backfill_toofull \u003e 0",
+                    "prom_ql": "sum(kafka_controller_active_count) by (job) != 1",
                     "severity": 2
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -396,13 +70,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327315319000
+        "uuid": 1717556327150310000
     },
     {
         "id": 0,
@@ -412,225 +86,65 @@
             0
         ],
         "cluster": "",
-        "name": "CephPgDown",
-        "note": "Some groups are down (unavailable) for too long on {{ $labels.cluster }}. Please ensure that all the data are available",
+        "name": "Kafka Broker 连接数过多",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 1,
-        "severities": [
-            1
-        ],
-        "disabled": 1,
-        "prom_for_duration": 180,
-        "prom_ql": "ceph_pg_down \u003e 0",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_pg_down \u003e 0",
-                    "severity": 1
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327315892000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephPgIncomplete",
-        "note": "Some groups are incomplete (unavailable) for too long on {{ $labels.cluster }}. Please ensure that all the data are available",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 1,
-        "severities": [
-            1
-        ],
-        "disabled": 1,
-        "prom_for_duration": 120,
-        "prom_ql": "ceph_pg_incomplete \u003e 0",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_pg_incomplete \u003e 0",
-                    "severity": 1
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327316390000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "CephPgInconsistent",
-        "note": "Some groups are inconsistent for too long on {{ $labels.cluster }}. Data is available but inconsistent across nodes",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 2,
+        "severity": 0,
         "severities": [
             2
         ],
-        "disabled": 1,
+        "disabled": 0,
         "prom_for_duration": 60,
-        "prom_ql": "ceph_pg_inconsistent \u003e 0",
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
             "queries": [
                 {
-                    "prom_ql": "ceph_pg_inconsistent \u003e 0",
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(kafka_server_connection_count) by (job, instance) \u003e 1000",
                     "severity": 2
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -639,13 +153,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327316911000
+        "uuid": 1717556327151102000
     },
     {
         "id": 0,
@@ -655,63 +169,148 @@
             0
         ],
         "cluster": "",
-        "name": "CephPgUnavailable",
-        "note": "Some groups are unavailable on {{ $labels.cluster }}. Please check their detailed status and current configuration.",
+        "name": "Kafka Fetch 请求高延迟",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 1,
+        "severity": 0,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "queries": [
+                {
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "kafka_request_time_99p_milliseconds{type=\"Fetch\"} \u003e 1000",
+                    "severity": 2
+                }
+            ]
+        },
+        "prom_eval_interval": 30,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "00:00",
+        "enable_etimes": [
+            "00:00"
+        ],
+        "enable_days_of_week": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [
+            "email"
+        ],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {},
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1717556327151678000
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            0
+        ],
+        "cluster": "",
+        "name": "Kafka Partition 数量过多",
+        "note": "",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 0,
         "severities": [
             1
         ],
-        "disabled": 1,
-        "prom_for_duration": 300,
-        "prom_ql": "ceph_pg_total - ceph_pg_active \u003e 0",
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
             "queries": [
                 {
-                    "prom_ql": "ceph_pg_total - ceph_pg_active \u003e 0",
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "kafka_partition_count \u003e 5000",
                     "severity": 1
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -720,13 +319,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327317557000
+        "uuid": 1717556327152312000
     },
     {
         "id": 0,
@@ -736,63 +335,397 @@
             0
         ],
         "cluster": "",
-        "name": "CephTargetDown",
-        "note": "CEPH target down for more than 2m, please check - it could be a either exporter crash or a whole cluster crash",
+        "name": "Kafka Produce 请求高延迟",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 1,
+        "severity": 0,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "queries": [
+                {
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "kafka_request_time_99p_milliseconds{type=\"Produce\"} \u003e 100",
+                    "severity": 2
+                }
+            ]
+        },
+        "prom_eval_interval": 30,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "00:00",
+        "enable_etimes": [
+            "00:00"
+        ],
+        "enable_days_of_week": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [
+            "email"
+        ],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {},
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1717556327152981000
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            0
+        ],
+        "cluster": "",
+        "name": "Kafka 每秒 Fetch 请求超过1000",
+        "note": "",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 0,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "queries": [
+                {
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_request_count_total{type=\"Fetch\"}[1m])) by (job, instance) \u003e 1000",
+                    "severity": 2
+                }
+            ]
+        },
+        "prom_eval_interval": 30,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "00:00",
+        "enable_etimes": [
+            "00:00"
+        ],
+        "enable_days_of_week": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [
+            "email"
+        ],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {},
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1717556327153589000
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            0
+        ],
+        "cluster": "",
+        "name": "Kafka 每秒 Produce 请求超过1000",
+        "note": "",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 0,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "queries": [
+                {
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_request_count_total{type=\"Produce\"}[1m])) by (job, instance) \u003e 1000",
+                    "severity": 2
+                }
+            ]
+        },
+        "prom_eval_interval": 30,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "00:00",
+        "enable_etimes": [
+            "00:00"
+        ],
+        "enable_days_of_week": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [
+            "email"
+        ],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {},
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1717556327154308000
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            0
+        ],
+        "cluster": "",
+        "name": "Kafka 消费延迟较高",
+        "note": "",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 0,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "queries": [
+                {
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(max(kafka_log_end_offset) by (job, topic, partition)) by (job, topic)\n- on (topic) group_left (consumer_group)\nsum(max(kafka_group_commit_offset) by (job, consumer_group, topic, partition)) by (job, consumer_group, topic) \u003e 10000",
+                    "severity": 2
+                }
+            ]
+        },
+        "prom_eval_interval": 30,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "00:00",
+        "enable_etimes": [
+            "00:00"
+        ],
+        "enable_days_of_week": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [
+            "email"
+        ],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {},
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1717556327154879000
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            0
+        ],
+        "cluster": "",
+        "name": "Kafka 请求 S3 失败率较高",
+        "note": "",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 0,
         "severities": [
             1
         ],
-        "disabled": 1,
-        "prom_for_duration": 600,
-        "prom_ql": "up{job=\"ceph\"} == 0",
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
             "queries": [
                 {
-                    "prom_ql": "up{job=\"ceph\"} == 0",
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_stream_operation_latency_count{operation_type=\"S3Request\", status=\"failed\"}[1m])) by (job, operation_name) \u003e 0.1",
                     "severity": 1
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -801,13 +734,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327318071000
+        "uuid": 1717556327155698000
     },
     {
         "id": 0,
@@ -817,144 +750,65 @@
             0
         ],
         "cluster": "",
-        "name": "CephWarnState",
-        "note": "Ceph is in Warn state longer than 30m, please check status of pools and OSDs",
+        "name": "Kafka 请求错误率过高",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 2,
+        "severity": 0,
         "severities": [
-            2
+            1
         ],
-        "disabled": 1,
-        "prom_for_duration": 1800,
-        "prom_ql": "ceph_health_status == 1",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_health_status == 1",
-                    "severity": 2
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327318544000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "MonitorAvailableStorage",
-        "note": "Monitor storage for {{ $labels.monitor }} less than 30% - please check why its too high",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 2,
-        "severities": [
-            2
-        ],
-        "disabled": 1,
+        "disabled": 0,
         "prom_for_duration": 60,
-        "prom_ql": "ceph_monitor_avail_percent \u003c 30",
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
             "queries": [
                 {
-                    "prom_ql": "ceph_monitor_avail_percent \u003c 30",
-                    "severity": 2
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_request_error_count_total{error!=\"NONE\"}[1m])) by (job, instance, error) \u003e 0.1",
+                    "severity": 1
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -963,13 +817,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327319044000
+        "uuid": 1717556327156240000
     },
     {
         "id": 0,
@@ -979,63 +833,71 @@
             0
         ],
         "cluster": "",
-        "name": "MonitorClockSkewTooHigh",
-        "note": "Monitor clock skew detected on  {{ $labels.monitor }} - please check ntp and harware clock settins",
+        "name": "Kafka 集群入向网络流量较高",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 2,
+        "severity": 0,
         "severities": [
-            2
+            2,
+            3
         ],
-        "disabled": 1,
+        "disabled": 0,
         "prom_for_duration": 60,
-        "prom_ql": "abs(ceph_monitor_clock_skew_seconds) \u003e 0.1",
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
+            "inhibit": true,
             "queries": [
                 {
-                    "prom_ql": "abs(ceph_monitor_clock_skew_seconds) \u003e 0.1",
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_broker_network_io_bytes_total{direction=\"in\"}[1m])) by (job) \u003e 50 * 1024 * 1024",
                     "severity": 2
+                },
+                {
+                    "prom_ql": "sum(rate(kafka_broker_network_io_bytes_total{direction=\"in\"}[1m])) by (job) \u003e 20 * 1024 * 1024",
+                    "severity": 3
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -1044,13 +906,13 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327319491000
+        "uuid": 1717556327156954000
     },
     {
         "id": 0,
@@ -1060,63 +922,71 @@
             0
         ],
         "cluster": "",
-        "name": "OsdApplyLatencyTooHigh",
-        "note": "OSD latency for {{ $labels.osd }} is too high. Please check if it doesn't stuck in weird state",
+        "name": "Kafka 集群出向网络流量较高",
+        "note": "",
         "prod": "metric",
         "algorithm": "",
         "algo_params": null,
         "delay": 0,
-        "severity": 2,
+        "severity": 0,
         "severities": [
-            2
+            2,
+            3
         ],
-        "disabled": 1,
-        "prom_for_duration": 90,
-        "prom_ql": "ceph_osd_perf_apply_latency_seconds \u003e 10",
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
         "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
+            "inhibit": true,
             "queries": [
                 {
-                    "prom_ql": "ceph_osd_perf_apply_latency_seconds \u003e 10",
+                    "keys": {
+                        "labelKey": "",
+                        "valueKey": ""
+                    },
+                    "prom_ql": "sum(rate(kafka_broker_network_io_bytes_total{direction=\"out\"}[1m])) by (job) \u003e 50 * 1024 * 1024",
                     "severity": 2
+                },
+                {
+                    "prom_ql": "sum(rate(kafka_broker_network_io_bytes_total{direction=\"out\"}[1m])) by (job) \u003e 20 * 1024 * 1024",
+                    "severity": 3
                 }
-            ],
-            "severity": 0
+            ]
         },
-        "prom_eval_interval": 15,
+        "prom_eval_interval": 30,
         "enable_stime": "00:00",
         "enable_stimes": [
             "00:00"
         ],
-        "enable_etime": "23:59",
+        "enable_etime": "00:00",
         "enable_etimes": [
-            "23:59"
+            "00:00"
         ],
         "enable_days_of_week": [
+            "0",
             "1",
             "2",
             "3",
             "4",
             "5",
-            "6",
-            "0"
+            "6"
         ],
         "enable_days_of_weeks": [
             [
+                "0",
                 "1",
                 "2",
                 "3",
                 "4",
                 "5",
-                "6",
-                "0"
+                "6"
             ]
         ],
         "enable_in_bg": 0,
         "notify_recovered": 1,
-        "notify_channels": [],
+        "notify_channels": [
+            "email"
+        ],
         "notify_groups_obj": null,
         "notify_groups": null,
         "notify_repeat_step": 60,
@@ -1125,93 +995,12 @@
         "callbacks": [],
         "runbook_url": "",
         "append_tags": [],
-        "annotations": null,
+        "annotations": {},
         "extra_config": null,
         "create_at": 0,
         "create_by": "",
         "update_at": 0,
         "update_by": "",
-        "uuid": 1717556327320012000
-    },
-    {
-        "id": 0,
-        "group_id": 0,
-        "cate": "prometheus",
-        "datasource_ids": [
-            0
-        ],
-        "cluster": "",
-        "name": "OsdDown",
-        "note": "OSD is down longer than 30 min, please check whats the status",
-        "prod": "metric",
-        "algorithm": "",
-        "algo_params": null,
-        "delay": 0,
-        "severity": 2,
-        "severities": [
-            2
-        ],
-        "disabled": 1,
-        "prom_for_duration": 1800,
-        "prom_ql": "ceph_osd_up == 0",
-        "rule_config": {
-            "algo_params": null,
-            "inhibit": false,
-            "prom_ql": "",
-            "queries": [
-                {
-                    "prom_ql": "ceph_osd_up == 0",
-                    "severity": 2
-                }
-            ],
-            "severity": 0
-        },
-        "prom_eval_interval": 15,
-        "enable_stime": "00:00",
-        "enable_stimes": [
-            "00:00"
-        ],
-        "enable_etime": "23:59",
-        "enable_etimes": [
-            "23:59"
-        ],
-        "enable_days_of_week": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0"
-        ],
-        "enable_days_of_weeks": [
-            [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "0"
-            ]
-        ],
-        "enable_in_bg": 0,
-        "notify_recovered": 1,
-        "notify_channels": [],
-        "notify_groups_obj": null,
-        "notify_groups": null,
-        "notify_repeat_step": 60,
-        "notify_max_number": 0,
-        "recover_duration": 0,
-        "callbacks": [],
-        "runbook_url": "",
-        "append_tags": [],
-        "annotations": null,
-        "extra_config": null,
-        "create_at": 0,
-        "create_by": "",
-        "update_at": 0,
-        "update_by": "",
-        "uuid": 1717556327320476000
+        "uuid": 1717556327157473000
     }
 ]
