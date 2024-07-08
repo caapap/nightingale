@@ -172,5 +172,5 @@ MaxIdleConnsPerHost = 100
 # TargetLabel = "__address__"
 
 [Ibex]
-Enable = false
+Enable = true 
 RPCListen = "0.0.0.0:20090"
