@@ -16,6 +16,6 @@ cp -r ../etc .
 docker build -t stellar:${tag} .
 
 docker tag stellar:${tag} docker.kxdigit.com/n9e/stellar:${tag}
-docker push docker.kxdigit.com/n9e/stellar:${tag}
+docker push docker.kxdigit.com/stellar/stellar:${tag}
 
-rm -rf n9e pub
+rm -rf n9e pub etc integrations
