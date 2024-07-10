@@ -5,7 +5,7 @@ WORKDIR /app
 ADD n9e /app/
 ADD etc /app/etc/
 ADD integrations /app/integrations/
-RUN pip install requests
+RUN pip install requests -i https://pypi.mirrors.ustc.edu.cn/simple
 
 EXPOSE 17000
 
