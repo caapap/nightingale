@@ -1,14 +1,19 @@
 package router
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/ccfos/nightingale/v6/models"
+	"github.com/ccfos/nightingale/v6/pushgw/pconf"
+	"github.com/ccfos/nightingale/v6/pushgw/writer"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/prometheus/prompb"
 	"github.com/toolkits/pkg/ginx"
 	"github.com/toolkits/pkg/i18n"
 	"github.com/toolkits/pkg/str"
@@ -271,6 +276,32 @@ func (rt *Router) alertRulePutFields(c *gin.Context) {
 			continue
 		}
 
+		if f.Action == "annotations_add" {
+			if annotations, has := f.Fields["annotations"]; has {
+				annotationsMap := annotations.(map[string]interface{})
+				for k, v := range annotationsMap {
+					ar.AnnotationsJSON[k] = v.(string)
+				}
+				b, err := json.Marshal(ar.AnnotationsJSON)
+				ginx.Dangerous(err)
+				ginx.Dangerous(ar.UpdateFieldsMap(rt.Ctx, map[string]interface{}{"annotations": string(b)}))
+				continue
+			}
+		}
+
+		if f.Action == "annotations_del" {
+			if annotations, has := f.Fields["annotations"]; has {
+				annotationsKeys := annotations.(map[string]interface{})
+				for key := range annotationsKeys {
+					delete(ar.AnnotationsJSON, key)
+				}
+				b, err := json.Marshal(ar.AnnotationsJSON)
+				ginx.Dangerous(err)
+				ginx.Dangerous(ar.UpdateFieldsMap(rt.Ctx, map[string]interface{}{"annotations": string(b)}))
+				continue
+			}
+		}
+
 		if f.Action == "callback_add" {
 			// 增加一个 callback 地址
 			if callbacks, has := f.Fields["callbacks"]; has {
@@ -401,4 +432,51 @@ func (rt *Router) alertRuleCallbacks(c *gin.Context) {
 	}
 
 	ginx.NewRender(c).Data(callbacks, nil)
+}
+
+type alertRuleTestForm struct {
+	Configs []*pconf.RelabelConfig `json:"configs"`
+	Tags    []string               `json:"tags"`
+}
+
+func (rt *Router) relabelTest(c *gin.Context) {
+	var f alertRuleTestForm
+	ginx.BindJSON(c, &f)
+
+	if len(f.Tags) == 0 || len(f.Configs) == 0 {
+		ginx.Bomb(http.StatusBadRequest, "relabel config is empty")
+	}
+
+	labels := make([]prompb.Label, len(f.Tags))
+	for i, tag := range f.Tags {
+		label := strings.Split(tag, "=")
+		if len(label) != 2 {
+			ginx.Bomb(http.StatusBadRequest, "tag:%s format error", tag)
+		}
+
+		labels[i] = prompb.Label{Name: label[0], Value: label[1]}
+	}
+
+	for i := 0; i < len(f.Configs); i++ {
+		if f.Configs[i].Replacement == "" {
+			f.Configs[i].Replacement = "$1"
+		}
+
+		if f.Configs[i].Separator == "" {
+			f.Configs[i].Separator = ";"
+		}
+
+		if f.Configs[i].Regex == "" {
+			f.Configs[i].Regex = "(.*)"
+		}
+	}
+
+	relabels := writer.Process(labels, f.Configs...)
+
+	var tags []string
+	for _, label := range relabels {
+		tags = append(tags, fmt.Sprintf("%s=%s", label.Name, label.Value))
+	}
+
+	ginx.NewRender(c).Data(tags, nil)
 }
