@@ -11,5 +11,5 @@ echo "tag: ${tag}"
 docker build -t stellar:${tag} .
 
 docker tag stellar:${tag} docker.kxdigit.com/stellar/stellar:${tag}
-docker push docker.kxdigit.com/stellar/stellar:${tag}
+docker save docker.kxdigit.com/stellar/stellar:${tag} -o stellar-${tag}.tar
 
