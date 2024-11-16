@@ -4,9 +4,6 @@ cp -f ./docker/initsql/a-ste.sql ste.sql
 
 if [ ! -d "./pub" ]; then
     TAG=$(curl -sX GET https://api.github.com/repos/n9e/fe/releases/latest   | awk '/tag_name/{print $4;exit}' FS='[""]')
-    #TAG=$(curl -sX GET -H "Authorization: token ${Token}" https://api.github.com/repos/caapap/fe/releases/latest   | awk '/tag_name/{print $4;exit}' FS='[""]')
-    #TAG=$(curl -sX GET https://api.github.com/repos/caapap/stellar-fe/releases/latest   | awk '/tag_name/{print $4;exit}' FS='[""]')
-    #if ! curl -H "Authorization: token ${Token}" -o stellar-fe-${TAG}.zip -L https://github.com/caapap/fe/releases/download/${TAG}/stellar-fe-${TAG}.zip; then
     if ! curl -o stellar-fe-${TAG}.zip -L https://github.com/caapap/fe/releases/download/${TAG}/stellar-fe-${TAG}.zip; then
         echo "failed to download stellar-fe-${TAG}.zip!"
         exit 1
