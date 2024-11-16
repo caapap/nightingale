@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+env:
+  GO_VERSION: 1.23
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Go Environment
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Login Huawei-Cloud SWR
+        uses: docker/login-action@v2
+        with:
+          registry: swr.cn-east-3.myhuaweicloud.com
+          username: ${{ secrets.HUAWEI_SWR_USERNAME }}
+          password: ${{ secrets.HUAWEI_SWR_PASSWORD }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser
+          version: '~> v1'
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: 推送镜像到华为云 SWR
+        run: |
+          # 推送 AMD64 镜像
+          docker push swr.cn-east-3.myhuaweicloud.com/caapap/stellar:${{ github.ref_name }}-amd64
+          # 推送 ARM64 镜像
+          docker push swr.cn-east-3.myhuaweicloud.com/caapap/stellar:${{ github.ref_name }}-arm64v8
+          # 推送多架构镜像
+          docker manifest push swr.cn-east-3.myhuaweicloud.com/caapap/stellar:${{ github.ref_name }}
+          # 推送 latest 标签
+          docker manifest push swr.cn-east-3.myhuaweicloud.com/caapap/stellar:latest
