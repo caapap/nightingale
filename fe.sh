@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp -f ./docker/initsql/a-ste.sql ste.sql
+cp -f ./docker/initsql/a-n9e.sql n9e.sql
 
 if [ ! -d "./pub" ]; then
     TAG=$(curl -sX GET https://api.github.com/repos/n9e/fe/releases/latest   | awk '/tag_name/{print $4;exit}' FS='[""]')
