@@ -79,7 +79,7 @@ archives:
 release:
   github:
     owner: caapap
-    name: stellar
+    name: nightingale
   name_template: "v{{ .Version }}"
   draft: false
   replace_existing_artifacts: true
