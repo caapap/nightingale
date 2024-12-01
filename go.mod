@@ -1,6 +1,6 @@
 module github.com/ccfos/nightingale/v6
 
-go 1.23
+go 1.22
 
 require (
 	github.com/BurntSushi/toml v0.3.1
@@ -100,7 +100,7 @@ require (
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/image v0.18.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
