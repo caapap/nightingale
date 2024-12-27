@@ -1,0 +1,182 @@
+[
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "PV告警组-持久卷状态异常",
+        "note": "持久卷 {{ $labels.persistentvolume }} 当前状态为 {{ $labels.phase }}。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 300,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "kube_persistentvolume_status_phase{phase=~\"Failed|Pending\",job=\"kube-state-metrics\"} \u003e 0\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "持久卷 {{ $labels.persistentvolume }} 当前状态为 {{ $labels.phase }}。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeerrors",
+            "summary": "持久卷配置出现问题。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210942768481,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "PV告警组-持久卷空间不足",
+        "note": "命名空间 {{ $labels.namespace }} 中的持久卷声明 {{ $labels.persistentvolumeclaim }} 仅剩余 {{ $value | humanizePercentage }} 的空间。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  kubelet_volume_stats_available_bytes{job=\"kubelet\"}\n    /\n  kubelet_volume_stats_capacity_bytes{job=\"kubelet\"}\n) \u003c 0.03\nand\nkubelet_volume_stats_used_bytes{job=\"kubelet\"} \u003e 0\nunless on(namespace, persistentvolumeclaim)\nkube_persistentvolumeclaim_access_mode{ access_mode=\"ReadOnlyMany\"} == 1\nunless on(namespace, persistentvolumeclaim)\nkube_persistentvolumeclaim_labels{label_excluded_from_alerts=\"true\"} == 1\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "命名空间 {{ $labels.namespace }} 中的持久卷声明 {{ $labels.persistentvolumeclaim }} 仅剩余 {{ $value | humanizePercentage }} 的空间。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumefillingup",
+            "summary": "持久卷空间即将耗尽。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210944252679,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    }
+]

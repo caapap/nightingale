@@ -1,0 +1,362 @@
+[
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Pod告警组-启动延迟过高",
+        "note": "节点 {{ $labels.node }} 上的Pod启动99分位延迟为 {{ $value }} 秒。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job=\"kubelet\"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\"} \u003e 60\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "节点 {{ $labels.node }} 上的Pod启动99分位延迟为 {{ $value }} 秒。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletpodstartuplatencyhigh",
+            "summary": "Pod启动延迟过高。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210945895012,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Pod告警组-节点Pod数量过多",
+        "note": "节点 '{{ $labels.node }}' 的Pod数量已达到容量的 {{ $value | humanizePercentage }}。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 3,
+        "severities": [
+            3
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "count by(node) (\n  (kube_pod_status_phase{job=\"kube-state-metrics\",phase=\"Running\"} == 1) * on(instance,pod,namespace,cluster) group_left(node) topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job=\"kube-state-metrics\"})\n)\n/\nmax by(node) (\n  kube_node_status_capacity{job=\"kube-state-metrics\",resource=\"pods\"} != 1\n) \u003e 0.95\n",
+                    "severity": 3
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "节点 '{{ $labels.node }}' 的Pod数量已达到容量的 {{ $value | humanizePercentage }}。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubelettoomanypods",
+            "summary": "节点运行的Pod数量接近上限。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210947236758,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Pod告警组-容器崩溃循环",
+        "note": "命名空间 {{ $labels.namespace }} 中的Pod {{ $labels.pod }} (容器 {{ $labels.container }}) 处于等待状态 (原因: \"CrashLoopBackOff\")。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "max_over_time(kube_pod_container_status_waiting_reason{reason=\"CrashLoopBackOff\", job=\"kube-state-metrics\"}[5m]) \u003e= 1\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "命名空间 {{ $labels.namespace }} 中的Pod {{ $labels.pod }} (容器 {{ $labels.container }}) 处于等待状态 (原因: \"CrashLoopBackOff\")。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping",
+            "summary": "Pod处于崩溃循环状态。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210948671223,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Pod告警组-Pod未就绪",
+        "note": "命名空间 {{ $labels.namespace }} 中的Pod {{ $labels.pod }} 处于未就绪状态超过15分钟。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "sum by (namespace, pod) (\n  max by(namespace, pod) (\n    kube_pod_status_phase{job=\"kube-state-metrics\", phase=~\"Pending|Unknown\"}\n  ) * on(namespace, pod) group_left(owner_kind) topk by(namespace, pod) (\n    1, max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!=\"Job\"})\n  )\n) \u003e 0\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "命名空间 {{ $labels.namespace }} 中的Pod {{ $labels.pod }} 处于未就绪状态超过15分钟。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodnotready",
+            "summary": "Pod处于未就绪状态超过15分钟。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210950195005,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    }
+]

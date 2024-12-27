@@ -1,0 +1,1337 @@
+[
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-集群红色状态",
+        "note": "ES集群处于红色状态 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_status{color=\"red\"} == 1",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES集群处于红色状态\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES集群处于红色状态 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210872672810,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-集群黄色状态",
+        "note": "ES集群处于黄色状态 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_status{color=\"yellow\"} == 1",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES集群处于黄色状态\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES集群处于黄色状态 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210874145584,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-磁盘空间耗尽",
+        "note": "ES磁盘空间耗尽 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes * 100 \u003c 10",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "磁盘使用率超过90%\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES磁盘空间耗尽 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210875536188,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-磁盘空间不足",
+        "note": "ES磁盘空间不足 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 120,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes * 100 \u003c 20",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "磁盘使用率超过80%\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES磁盘空间不足 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210876864472,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-数据节点不足",
+        "note": "ES数据节点不足 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_number_of_data_nodes \u003c 3",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES集群缺少数据节点\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES数据节点不足 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210878423278,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-节点不足",
+        "note": "ES节点不足 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_number_of_nodes \u003c 3",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES集群缺少节点\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES节点不足 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210879698843,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-堆内存使用率过高",
+        "note": "ES堆内存使用率过高 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 120,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(elasticsearch_jvm_memory_used_bytes{area=\"heap\"} / elasticsearch_jvm_memory_max_bytes{area=\"heap\"}) * 100 \u003e 90",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "堆内存使用率超过90%\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES堆内存使用率过高 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210881027050,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-堆内存使用率警告",
+        "note": "ES堆内存使用率警告 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 120,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(elasticsearch_jvm_memory_used_bytes{area=\"heap\"} / elasticsearch_jvm_memory_max_bytes{area=\"heap\"}) * 100 \u003e 80",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "堆内存使用率超过80%\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES堆内存使用率警告 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210882430044,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-分片初始化中",
+        "note": "ES分片正在初始化 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 3,
+        "severities": [
+            3
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_initializing_shards \u003e 0",
+                    "severity": 3
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES正在初始化分片\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES分片正在���始化 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210883774212,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-分片初始化时间过长",
+        "note": "ES分片初始化时间过长 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_initializing_shards \u003e 0",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES分片初始化持续超过15分钟\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES分片初始化时间过长 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210885038056,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-无新文档写入",
+        "note": "ES无新文档写入 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "increase(elasticsearch_indices_indexing_index_total{es_data_node=\"true\"}[10m]) \u003c 1",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "10分钟内无新文档写入！\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES无新文档写入 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210886438876,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-待处理任务积压",
+        "note": "ES存在待处理任务 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_number_of_pending_tasks \u003e 0",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES存在待处理任务，集群运行缓慢\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES存在待处理任务 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210887699316,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-分片迁移中",
+        "note": "ES分片正在迁移 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 3,
+        "severities": [
+            3
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_relocating_shards \u003e 0",
+                    "severity": 3
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES正在迁移分片\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES分片正在迁移 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210888989234,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-分片迁移时间过长",
+        "note": "ES分片迁移时间过长 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_relocating_shards \u003e 0",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES分片迁移持续超过15分钟\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES分片迁移时间过长 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210890396667,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Elasticsearch告警组-存在未分配分片",
+        "note": "ES存在未分配分片 (实例 {{ $labels.instance }})",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 0,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "elasticsearch_cluster_health_unassigned_shards \u003e 0",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "ES存在未分配的分片\n  当前值 = {{ $value }}\n  标签 = {{ $labels }}",
+            "summary": "ES存在未分配分片 (实例 {{ $labels.instance }})"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210891621231,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    }
+]

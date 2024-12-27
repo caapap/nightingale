@@ -1,0 +1,1078 @@
+[
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-存储配额不足",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的数据库大小超过配额，请进行碎片整理或增加配额，否则当存储空间满时将禁止写入。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(etcd_mvcc_db_total_size_in_bytes/etcd_server_quota_backend_bytes)*100 \u003e 95\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的数据库大小超过配额，请进行碎片整理或增加配额，否则当存储空间满时将禁止写入。",
+            "summary": "etcd集群数据库空间即将耗尽。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210893700464,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-数据库增长过快",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 在过去4小时内数据库大小增长超过50%，请检查可能存在的异常。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "increase(((etcd_mvcc_db_total_size_in_bytes/etcd_server_quota_backend_bytes)*100)[240m:1m]) \u003e 50\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 在过去4小时内数据库大小增长超过50%，请检查可能存在的异常。",
+            "summary": "etcd集群数据库增长速度过快。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210895096589,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-GRPC请求延迟高",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的 {{ $labels.grpc_method }} 方法的gRPC请求99分位延迟为 {{ $value }}秒。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{job=~\".*etcd.*\", grpc_method!=\"Defragment\", grpc_type=\"unary\"}[5m])) without(grpc_type))\n\u003e 0.15\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的 {{ $labels.grpc_method }} 方法的gRPC请求99分位延迟为 {{ $value }}秒。",
+            "summary": "etcd的gRPC请求响应较慢。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210896556027,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-提交延迟高",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的提交操作99分位延迟为 {{ $value }}秒。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket{job=~\".*etcd.*\"}[5m]))\n\u003e 0.25\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的提交操作99分位延迟为 {{ $value }}秒。",
+            "summary": "etcd集群提交操作延迟过高。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210897859532,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-文件同步延迟高",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的fsync操作99分位延迟为 {{ $value }}秒。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~\".*etcd.*\"}[5m]))\n\u003e 0.5\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的fsync操作99分位延迟为 {{ $value }}秒。",
+            "summary": "etcd集群文件同步延迟过高。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210899137623,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-GRPC请求失败率高",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的 {{ $labels.grpc_method }} 方法请求失败率为 {{ $value }}%。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "100 * sum(rate(grpc_server_handled_total{job=~\".*etcd.*\", grpc_code=~\"Unknown|FailedPrecondition|ResourceExhausted|Internal|Unavailable|DataLoss|DeadlineExceeded\"}[5m])) without (grpc_type, grpc_code)\n  /\nsum(rate(grpc_server_handled_total{job=~\".*etcd.*\"}[5m])) without (grpc_type, grpc_code)\n  \u003e 1\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 的 {{ $labels.grpc_method }} 方法请求失败率为 {{ $value }}%。",
+            "summary": "etcd的GRPC请求失败率过高。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210900540564,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-集群成员不足",
+        "note": "etcd集群 \"{{ $labels.job }}\": 成员数量不足 ({{ $value }})。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 180,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "sum(up{job=~\".*etcd.*\"} == bool 1) without (instance) \u003c ((count(up{job=~\".*etcd.*\"}) without (instance) + 1) / 2)\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 成员数量不足 ({{ $value }})。",
+            "summary": "etcd集群成员数量不足。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210901896200,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-成员通信延迟高",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 与 {{ $labels.To }} 的通信延迟为 {{ $value }}秒。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket{job=~\".*etcd.*\"}[5m]))\n\u003e 0.15\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 与 {{ $labels.To }} 的通信延迟为 {{ $value }}秒。",
+            "summary": "etcd集群成员间通信延迟过高。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210903175010,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-成员宕机",
+        "note": "etcd集群 \"{{ $labels.job }}\": 存在宕机成员 ({{ $value }})。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "max without (endpoint) (\n  sum without (instance) (up{job=~\".*etcd.*\"} == bool 0)\nor\n  count without (To) (\n    sum without (instance) (rate(etcd_network_peer_sent_failures_total{job=~\".*etcd.*\"}[120s])) \u003e 0.01\n  )\n)\n\u003e 0\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 存在宕机成员 ({{ $value }})。",
+            "summary": "etcd集群存在宕机成员。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210904463272,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-无Leader",
+        "note": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 没有Leader。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "etcd_server_has_leader{job=~\".*etcd.*\"} == 0\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "etcd集群 \"{{ $labels.job }}\": 实例 {{ $labels.instance }} 没有Leader。",
+            "summary": "etcd集群没有Leader。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210905737169,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-网络延迟高",
+        "note": "集群: basic, 实例: {{ $labels.instance }}, 当前值:{{ $value }}",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 3,
+        "severities": [
+            3
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To,instance,job,le) ) \u003e 1",
+                    "severity": 3
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [
+            "env=basic",
+            "name=tidb"
+        ],
+        "annotations": {
+            "description": "集群: basic, 实例: {{ $labels.instance }}, 当前值:{{ $value }}",
+            "summary": "etcd网络延迟过高",
+            "value": "{{ $value }}"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210907023998,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Etcd告警组-磁盘写入延迟高",
+        "note": "集群: basic, 实例: {{ $labels.instance }}, 当前值:{{ $value }}",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 60,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance,job,le) ) \u003e 1",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [
+            "env=basic",
+            "name=tidb"
+        ],
+        "annotations": {
+            "description": "集群: basic, 实例: {{ $labels.instance }}, 当前值:{{ $value }}",
+            "summary": "etcd磁盘写入延迟过高",
+            "value": "{{ $value }}"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210908418993,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    }
+]

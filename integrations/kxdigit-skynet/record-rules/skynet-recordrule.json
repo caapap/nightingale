@@ -1,0 +1,89 @@
+[
+  {
+    "cluster": "0",
+    "name": "skynet_agent_allonline",
+    "disabled": 0,
+    "prom_ql": "up{job=\"ant-xagent@ant\"}",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 60s",
+    "append_tags": [],
+    "note": "所有在线skynet agent实例"
+  },
+  {
+    "cluster": "0",
+    "name": "skynet_xray_action_status",
+    "disabled": 0,
+    "prom_ql": "xray_action_status",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 30s",
+    "append_tags": [],
+    "note": "skynet中托管的所有服务数量"
+  },
+  {
+    "cluster": "0",
+    "name": "skynet2_xagent_uptime_seconds_all",
+    "disabled": 0,
+    "prom_ql": "instance_uptime{job=\"ant-xagent@ant\"}",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 60s",
+    "append_tags": [],
+    "note": "skynet2 xagent的在线运行时长"
+  },
+  {
+    "datasource_queries": [
+      {
+        "match_type": 0,
+        "op": "in",
+        "values": []
+      }
+    ],
+    "cluster": "0",
+    "name": "skynet2_xmanager_uptime_seconds_all",
+    "disabled": 0,
+    "prom_ql": "instance_uptime{job=\"ant-xmanager@ant\"}",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 60s",
+    "append_tags": [],
+    "note": "skynet2 xmanager的在线运行时长"
+  },
+  {
+    "datasource_queries": [
+      {
+        "match_type": 0,
+        "op": "in",
+        "values": []
+      }
+    ],
+    "cluster": "0",
+    "name": "skynet3_xagent_uptime_seconds_all",
+    "disabled": 0,
+    "prom_ql": "process_uptime_seconds{job=\"ant-xagent@ant\"}",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 30s",
+    "append_tags": [],
+    "note": "skynet3 xagent的在线运行时长"
+  },
+  {
+    "datasource_queries": [
+      {
+        "match_type": 0,
+        "op": "in",
+        "values": []
+      }
+    ],
+    "cluster": "0",
+    "name": "skynet3_xmanager_uptime_seconds_all",
+    "disabled": 0,
+    "prom_ql": "process_uptime_seconds{job=\"ant-xmanager@ant\"}",
+    "query_configs": null,
+    "prom_eval_interval": 60,
+    "cron_pattern": "@every 30s",
+    "append_tags": [],
+    "note": "skynet3 xmanager的在线运行时长"
+  }
+]

@@ -1,0 +1,992 @@
+[
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-集群崩溃循环",
+        "note": "{{$labels.job}} 集群中 {{ $value | humanizePercentage }} 的告警管理器实例在最近10分钟内重启了至少5次。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 300,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  count by (namespace,service) (\n    changes(process_start_time_seconds{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[10m]) \u003e 4\n  )\n/\n  count by (namespace,service) (\n    up{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}\n  )\n)\n\u003e= 0.5\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "{{$labels.job}} 集群中 {{ $value | humanizePercentage }} 的告警管理器实例在最近10分钟内重启了至少5次。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclustercrashlooping",
+            "summary": "同一集群中一半或更多的告警管理器实例处于崩溃循环状态。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210856802222,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-集群宕机",
+        "note": "{{$labels.job}} 集群中 {{ $value | humanizePercentage }} 的告警管理器实例在最近5分钟内运行时间不足一半。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 300,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  count by (namespace,service) (\n    avg_over_time(up{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m]) \u003c 0.5\n  )\n/\n  count by (namespace,service) (\n    up{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}\n  )\n)\n\u003e= 0.5\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "{{$labels.job}} 集群中 {{ $value | humanizePercentage }} 的告警管理器实例在最近5分钟内运行时间不足一半。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclusterdown",
+            "summary": "同一集群中一半或更多的告警管理器实例处于宕机状态。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210858341571,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-集群发送告警失败",
+        "note": "{{$labels.job}} 集群中任一实例向 {{ $labels.integration }} 发送通知的最低失败率为 {{ $value | humanizePercentage }}。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 300,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "min by (namespace,service, integration) (\n  rate(alertmanager_notifications_failed_total{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\", integration=~`.*`}[5m])\n/\n  rate(alertmanager_notifications_total{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\", integration=~`.*`}[5m])\n)\n\u003e 0.01\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "{{$labels.job}} 集群中任一实例向 {{ $labels.integration }} 发送通知的最低失败率为 {{ $value | humanizePercentage }}。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclusterfailedtosendalerts",
+            "summary": "集群中所有告警管理器实例向关键集成发送通知均失败。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210859618763,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-配置不一致",
+        "note": "{{$labels.job}} 集群中的告警管理器实例配置不一致。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 1200,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "count by (namespace,service) (\n  count_values by (namespace,service) (\"config_hash\", alertmanager_config_hash{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"})\n)\n!= 1\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "{{$labels.job}} 集群中的告警管理器实例配置不一致。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerconfiginconsistent",
+            "summary": "同一集群中的告警管理器实例配置不一致。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210860932463,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-重载失败",
+        "note": "{{ $labels.namespace }}/{{ $labels.pod}} 的配置加载失败。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "# Without max_over_time, failed scrapes could create false negatives, see\n# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.\nmax_over_time(alertmanager_config_last_reload_successful{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m]) == 0\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "{{ $labels.namespace }}/{{ $labels.pod}} 的配置加载失败。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerfailedreload",
+            "summary": "告警管理器配置重载失败。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210862343693,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-发送告警失败",
+        "note": "告警管理器 {{ $labels.namespace }}/{{ $labels.pod}} 向 {{ $labels.integration }} 发送 {{ $value | humanizePercentage }} 的通知失败。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 300,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  rate(alertmanager_notifications_failed_total{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m])\n/\n  rate(alertmanager_notifications_total{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m])\n)\n\u003e 0.01\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "告警管理器 {{ $labels.namespace }}/{{ $labels.pod}} 向 {{ $labels.integration }} 发送 {{ $value | humanizePercentage }} 的通知失败。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerfailedtosendalerts",
+            "summary": "告警管理器实例发送通知失败。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210863673750,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-成员不一致",
+        "note": "告警管理器 {{ $labels.namespace }}/{{ $labels.pod}} 仅发现 {{$labels.job}} 集群中的 {{ $value }} 个成员。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "# Without max_over_time, failed scrapes could create false negatives, see\n# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.\n  max_over_time(alertmanager_cluster_members{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m])\n\u003c on (namespace,service) group_left\n  count by (namespace,service) (max_over_time(alertmanager_cluster_members{job=\"alertmanager-main\",namespace=\"kubesphere-monitoring-system\"}[5m]))\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "告警管理器 {{ $labels.namespace }}/{{ $labels.pod}} 仅发现 {{$labels.job}} 集群中的 {{ $value }} 个成员。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagermembersinconsistent",
+            "summary": "告警管理器集群的成员未能发现所有其他集群成员。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210864953471,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-Prometheus发送告警全部失败",
+        "note": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 向任一告警管理器发送告警的最低错误率为 {{ printf \"%.1f\" $value }}%。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 1,
+        "severities": [
+            1
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "min without (alertmanager) (\n  rate(prometheus_notifications_errors_total{job=\"prometheus-k8s\",namespace=\"kubesphere-monitoring-system\",alertmanager!~``}[5m])\n/\n  rate(prometheus_notifications_sent_total{job=\"prometheus-k8s\",namespace=\"kubesphere-monitoring-system\",alertmanager!~``}[5m])\n)\n* 100\n\u003e 3\n",
+                    "severity": 1
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 向任一告警管理器发送告警的最低错误率为 {{ printf \"%.1f\" $value }}%。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstoanyalertmanager",
+            "summary": "Prometheus向任一告警管理器发送告警的错误率超过3%。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210866403532,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-Prometheus发送告警部分失败",
+        "note": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 向告警管理器 {{$labels.alertmanager}} 发送告警的错误率为 {{ printf \"%.1f\" $value }}%。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  rate(prometheus_notifications_errors_total{job=\"prometheus-k8s\",namespace=\"kubesphere-monitoring-system\"}[5m])\n/\n  rate(prometheus_notifications_sent_total{job=\"prometheus-k8s\",namespace=\"kubesphere-monitoring-system\"}[5m])\n)\n* 100\n\u003e 1\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 向告警管理器 {{$labels.alertmanager}} 发送告警的错误率为 {{ printf \"%.1f\" $value }}%。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstosomealertmanagers",
+            "summary": "Prometheus向特定告警管理器发送告警的错误率超过1%。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210867713411,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-Prometheus连接断开",
+        "note": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 未连接到任何告警管理器。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 600,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "# Without max_over_time, failed scrapes could create false negatives, see\n# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.\nmax_over_time(prometheus_notifications_alertmanagers_discovered{job=\"prometheus-k8s\",namespace=\"kubesphere-monitoring-system\"}[5m]) \u003c 1\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "Prometheus {{$labels.namespace}}/{{$labels.pod}} 未连接到任何告警管理器。",
+            "runbook_url": "https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotconnectedtoalertmanagers",
+            "summary": "Prometheus未连接到任何告警管理器。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210869081499,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    },
+    {
+        "id": 0,
+        "group_id": 0,
+        "cate": "prometheus",
+        "datasource_ids": [
+            1
+        ],
+        "datasource_queries": null,
+        "cluster": "",
+        "name": "Alertmanager告警组-Thanos规则DNS查询失败率高",
+        "note": "Thanos规则 {{$labels.instance}} 对告警管理器端点的DNS查询失败率为 {{$value | humanize}}%。",
+        "prod": "metric",
+        "algorithm": "",
+        "algo_params": null,
+        "delay": 0,
+        "severity": 2,
+        "severities": [
+            2
+        ],
+        "disabled": 0,
+        "prom_for_duration": 900,
+        "prom_ql": "",
+        "rule_config": {
+            "algo_params": null,
+            "inhibit": false,
+            "prom_ql": "",
+            "queries": [
+                {
+                    "prom_ql": "(\n  sum by (job, instance) (rate(thanos_rule_alertmanagers_dns_failures_total{job=\"thanos-ruler-kubesphere\",namespace=\"kubesphere-monitoring-system\"}[5m]))\n/\n  sum by (job, instance) (rate(thanos_rule_alertmanagers_dns_lookups_total{job=\"thanos-ruler-kubesphere\",namespace=\"kubesphere-monitoring-system\"}[5m]))\n* 100 \u003e 1\n)\n",
+                    "severity": 2
+                }
+            ],
+            "severity": 0
+        },
+        "event_relabel_config": null,
+        "prom_eval_interval": 15,
+        "enable_stime": "00:00",
+        "enable_stimes": [
+            "00:00"
+        ],
+        "enable_etime": "23:59",
+        "enable_etimes": [
+            "23:59"
+        ],
+        "enable_days_of_week": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "0"
+        ],
+        "enable_days_of_weeks": [
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "0"
+            ]
+        ],
+        "enable_in_bg": 0,
+        "notify_recovered": 1,
+        "notify_channels": [],
+        "notify_groups_obj": null,
+        "notify_groups": null,
+        "notify_repeat_step": 60,
+        "notify_max_number": 0,
+        "recover_duration": 0,
+        "callbacks": [],
+        "runbook_url": "",
+        "append_tags": [],
+        "annotations": {
+            "description": "Thanos规则 {{$labels.instance}} 对告警管理器端点的DNS查询失败率为 {{$value | humanize}}%。",
+            "runbook_url": "https://github.com/thanos-io/thanos/tree/main/mixin/runbook.md#alert-name-thanosrulealertmanagerhighdnsfailures",
+            "summary": "Thanos规则的DNS查询失败次数较多。"
+        },
+        "extra_config": null,
+        "create_at": 0,
+        "create_by": "",
+        "update_at": 0,
+        "update_by": "",
+        "uuid": 1735202210870506986,
+        "cur_event_count": 0,
+        "update_by_nickname": "",
+        "cron_pattern": ""
+    }
+]
