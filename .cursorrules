@@ -1,0 +1,26 @@
+# 项目介绍
+Nightingale 是一个开源的云原生监控告警平台，它结合了 Prometheus 和 Grafana 的优点，
+提供了统一的指标监控、日志和追踪可视化能力
+
+# 核心架构组件
+1. 核心服务模块：
+cmd/ - 包含主程序入口
+pkg/ - 核心功能包
+models/ - 数据模型定义
+alert/ - 告警系统实现
+center/ - 控制中心实现
+2. 数据存储层：
+storage/ - 存储层抽象
+dskit/ - 数据源工具集
+dscache/ - 数据源缓存
+memsto/ - 内存存储实现
+3. 集成模块：
+integrations/ - 第三方系统集成
+pushgw/ - 数据推送网关
+datasource/ - 数据源管理
+4. 辅助模块：
+conf/ - 配置管理
+cron/ - 定时任务
+cli/ - 命令行工具
+doc/ - 文档
+docker/ - 容器化支持
