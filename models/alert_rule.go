@@ -10,6 +10,7 @@ import (
 	"github.com/ccfos/nightingale/v6/pkg/ctx"
 	"github.com/ccfos/nightingale/v6/pkg/poster"
 	"github.com/ccfos/nightingale/v6/pushgw/pconf"
+	"github.com/robfig/cron/v3"
 
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
@@ -27,6 +28,8 @@ const (
 	PROMETHEUS    = "prometheus"
 	TDENGINE      = "tdengine"
 	ELASTICSEARCH = "elasticsearch"
+
+	CLICKHOUSE = "ck"
 )
 
 const (
@@ -372,12 +375,14 @@ func GetHostsQuery(queries []HostQuery) []map[string]interface{} {
 					blank += " "
 				}
 			} else {
-				blank := " "
+				var args []interface{}
+				var query []string
 				for _, tag := range lst {
-					m["tags not like ?"+blank] = "%" + tag + "%"
-					m["host_tags not like ?"+blank] = "%" + tag + "%"
-					blank += " "
+					query = append(query, "tags not like ?",
+						"(host_tags not like ? or host_tags is null)")
+					args = append(args, "%"+tag+"%", "%"+tag+"%")
 				}
+				m[strings.Join(query, " and ")] = args
 			}
 		case "hosts":
 			lst := []string{}
@@ -398,11 +403,13 @@ func GetHostsQuery(queries []HostQuery) []map[string]interface{} {
 					blank += " "
 				}
 			} else if q.Op == "!~" {
-				blank := " "
+				var args []interface{}
+				var query []string
 				for _, host := range lst {
-					m["ident not like ?"+blank] = strings.ReplaceAll(host, "*", "%")
-					blank += " "
+					query = append(query, "ident not like ?")
+					args = append(args, strings.ReplaceAll(host, "*", "%"))
 				}
+				m[strings.Join(query, " and ")] = args
 			}
 		}
 		query = append(query, m)
@@ -487,6 +494,27 @@ func (ar *AlertRule) Verify() error {
 		if _, err := strconv.ParseInt(gids[i], 10, 64); err != nil {
 			return fmt.Errorf("NotifyGroups(%s) invalid", ar.NotifyGroups)
 		}
+	}
+
+	if err := ar.validateCronPattern(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ar *AlertRule) validateCronPattern() error {
+	if ar.CronPattern == "" {
+		return nil
+	}
+
+	// 创建一个临时的 cron scheduler 来验证表达式
+	scheduler := cron.New(cron.WithSeconds())
+
+	// 尝试添加一个空函数来验证 cron 表达式
+	_, err := scheduler.AddFunc(ar.CronPattern, func() {})
+	if err != nil {
+		return fmt.Errorf("invalid cron pattern: %s, error: %v", ar.CronPattern, err)
 	}
 
 	return nil
@@ -1120,6 +1148,14 @@ func (ar *AlertRule) GetRuleType() string {
 	return ar.Prod
 }
 
+func (ar *AlertRule) IsClickHouseRule() bool {
+	return ar.Cate == CLICKHOUSE
+}
+
+func (ar *AlertRule) IsElasticSearch() bool {
+	return ar.Cate == ELASTICSEARCH
+}
+
 func (ar *AlertRule) GenerateNewEvent(ctx *ctx.Context) *AlertCurEvent {
 	event := &AlertCurEvent{}
 	ar.UpdateEvent(event)
@@ -1141,7 +1177,6 @@ func (ar *AlertRule) UpdateEvent(event *AlertCurEvent) {
 	event.PromForDuration = ar.PromForDuration
 	event.RuleConfig = ar.RuleConfig
 	event.RuleConfigJson = ar.RuleConfigJson
-	event.PromEvalInterval = ar.PromEvalInterval
 	event.Callbacks = ar.Callbacks
 	event.CallbacksJSON = ar.CallbacksJSON
 	event.RunbookUrl = ar.RunbookUrl

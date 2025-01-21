@@ -28,7 +28,7 @@ func MigrateIbexTables(db *gorm.DB) {
 		db = db.Set("gorm:table_options", tableOptions)
 	}
 
-	dts := []interface{}{&imodels.TaskMeta{}, &imodels.TaskScheduler{}, &imodels.TaskSchedulerHealth{}, &TaskHostDoing{}, &imodels.TaskAction{}}
+	dts := []interface{}{&imodels.TaskMeta{}, &imodels.TaskScheduler{}, &TaskHostDoing{}, &imodels.TaskAction{}}
 	for _, dt := range dts {
 		err := db.AutoMigrate(dt)
 		if err != nil {
@@ -38,13 +38,22 @@ func MigrateIbexTables(db *gorm.DB) {
 
 	for i := 0; i < 100; i++ {
 		tableName := fmt.Sprintf("task_host_%d", i)
-		err := db.Table(tableName).AutoMigrate(&imodels.TaskHost{})
-		if err != nil {
-			logger.Errorf("failed to migrate table:%s %v", tableName, err)
+		exists := db.Migrator().HasTable(tableName)
+		if exists {
+			continue
+		} else {
+			err := db.Table(tableName).AutoMigrate(&imodels.TaskHost{})
+			if err != nil {
+				logger.Errorf("failed to migrate table:%s %v", tableName, err)
+			}
 		}
 	}
 }
 
+func isPostgres(db *gorm.DB) bool {
+	dialect := db.Dialector.Name()
+	return dialect == "postgres"
+}
 func MigrateTables(db *gorm.DB) error {
 	var tableOptions string
 	switch db.Dialector.(type) {
@@ -54,12 +63,21 @@ func MigrateTables(db *gorm.DB) error {
 	if tableOptions != "" {
 		db = db.Set("gorm:table_options", tableOptions)
 	}
-
 	dts := []interface{}{&RecordingRule{}, &AlertRule{}, &AlertSubscribe{}, &AlertMute{},
 		&TaskRecord{}, &ChartShare{}, &Target{}, &Configs{}, &Datasource{}, &NotifyTpl{},
 		&Board{}, &BoardBusigroup{}, &Users{}, &SsoConfig{}, &models.BuiltinMetric{},
-		&models.MetricFilter{}, &models.BuiltinComponent{}, &models.NotificaitonRecord{},
-		&models.TargetBusiGroup{}}
+		&models.MetricFilter{}, &models.NotificaitonRecord{},
+		&models.TargetBusiGroup{}, &EsIndexPatternMigrate{}, &DashAnnotation{}}
+
+	if isPostgres(db) {
+		dts = append(dts, &models.PostgresBuiltinComponent{})
+	} else {
+		dts = append(dts, &models.BuiltinComponent{})
+	}
+
+	if !db.Migrator().HasColumn(&imodels.TaskSchedulerHealth{}, "scheduler") {
+		dts = append(dts, &imodels.TaskSchedulerHealth{})
+	}
 
 	if !columnHasIndex(db, &AlertHisEvent{}, "original_tags") ||
 		!columnHasIndex(db, &AlertCurEvent{}, "original_tags") {
@@ -74,7 +92,7 @@ func MigrateTables(db *gorm.DB) error {
 
 			for _, dt := range asyncDts {
 				if err := db.AutoMigrate(dt); err != nil {
-					logger.Errorf("failed to migrate table: %v", err)
+					logger.Errorf("failed to migrate table %+v err:%v", dt, err)
 				}
 			}
 		}()
@@ -170,14 +188,20 @@ func InsertPermPoints(db *gorm.DB) {
 	})
 
 	for _, op := range ops {
-		exists, err := models.Exists(db.Model(&models.RoleOperation{}).Where("operation = ? and role_name = ?", op.Operation, op.RoleName))
+		var count int64
+
+		err := db.Raw("SELECT COUNT(*) FROM role_operation WHERE operation = ? AND role_name = ?",
+			op.Operation, op.RoleName).Scan(&count).Error
+
 		if err != nil {
 			logger.Errorf("check role operation exists failed, %v", err)
 			continue
 		}
-		if exists {
+
+		if count > 0 {
 			continue
 		}
+
 		err = db.Create(&op).Error
 		if err != nil {
 			logger.Errorf("insert role operation failed, %v", err)
@@ -186,18 +210,17 @@ func InsertPermPoints(db *gorm.DB) {
 }
 
 type AlertRule struct {
-	ExtraConfig       string                   `gorm:"type:text;column:extra_config;not null;comment:extra_config"` // extra config
-	CronPattern       string                   `gorm:"type:varchar(64);cron_pattern"`
+	ExtraConfig       string                   `gorm:"type:text;column:extra_config"`
+	CronPattern       string                   `gorm:"type:varchar(64);column:cron_pattern"`
 	DatasourceQueries []models.DatasourceQuery `gorm:"datasource_queries;type:text;serializer:json"` // datasource queries
 }
 
 type AlertSubscribe struct {
-	ExtraConfig string       `gorm:"type:text;column:extra_config;not null;comment:extra_config"` // extra config
+	ExtraConfig string       `gorm:"type:text;column:extra_config"` // extra config
 	Severities  string       `gorm:"column:severities;type:varchar(32);not null;default:''"`
-	RuleID      int64        `gorm:"type:bigint;not null;default:0"`
-	RuleIds     []int64      `gorm:"column:rule_ids;type:varchar(1024);"`
-	BusiGroups  ormx.JSONArr `gorm:"column:busi_groups;type:varchar(4096);not null;"`
+	BusiGroups  ormx.JSONArr `gorm:"column:busi_groups;type:varchar(4096)"`
 	Note        string       `gorm:"column:note;type:varchar(1024);default:'';comment:note"`
+	RuleIds     []int64      `gorm:"column:rule_ids;type:varchar(1024)"`
 }
 
 type AlertMute struct {
@@ -247,8 +270,8 @@ type Configs struct {
 	Note string `gorm:"column:note;type:varchar(1024);default:'';comment:note"`
 	Cval string `gorm:"column:cval;type:text;comment:config value"`
 	//mysql tinyint//postgresql smallint
-	External  int64  `gorm:"column:external;type:bigint;default:0;comment:0 means built-in 1 means external"`
-	Encrypted int    `gorm:"column:encrypted;type:int;default:0;comment:0 means plaintext 1 means ciphertext"`
+	External  int    `gorm:"column:external;type:int;default:0;comment:0\\:built-in 1\\:external"`
+	Encrypted int    `gorm:"column:encrypted;type:int;default:0;comment:0\\:plaintext 1\\:ciphertext"`
 	CreateAt  int64  `gorm:"column:create_at;type:int;default:0;comment:create_at"`
 	CreateBy  string `gorm:"column:create_by;type:varchar(64);default:'';comment:cerate_by"`
 	UpdateAt  int64  `gorm:"column:update_at;type:int;default:0;comment:update_at"`
@@ -295,4 +318,31 @@ type TaskHostDoing struct {
 
 func (TaskHostDoing) TableName() string {
 	return "task_host_doing"
+}
+
+type EsIndexPatternMigrate struct {
+	CrossClusterEnabled int `gorm:"column:cross_cluster_enabled;type:int;default:0"`
+}
+
+func (EsIndexPatternMigrate) TableName() string {
+	return "es_index_pattern"
+}
+
+type DashAnnotation struct {
+	Id          int64  `gorm:"column:id;primaryKey;autoIncrement"`
+	DashboardId int64  `gorm:"column:dashboard_id;not null"`
+	PanelId     string `gorm:"column:panel_id;type:varchar(191);not null"`
+	Tags        string `gorm:"column:tags;type:text"`
+	Description string `gorm:"column:description;type:text"`
+	Config      string `gorm:"column:config;type:text"`
+	TimeStart   int64  `gorm:"column:time_start;not null;default:0"`
+	TimeEnd     int64  `gorm:"column:time_end;not null;default:0"`
+	CreateAt    int64  `gorm:"column:create_at;not null;default:0"`
+	CreateBy    string `gorm:"column:create_by;type:varchar(64);not null;default:''"`
+	UpdateAt    int64  `gorm:"column:update_at;not null;default:0"`
+	UpdateBy    string `gorm:"column:update_by;type:varchar(64);not null;default:''"`
+}
+
+func (DashAnnotation) TableName() string {
+	return "dash_annotation"
 }

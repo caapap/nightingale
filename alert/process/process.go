@@ -2,6 +2,7 @@ package process
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"sort"
@@ -21,6 +22,7 @@ import (
 	"github.com/ccfos/nightingale/v6/pushgw/writer"
 
 	"github.com/prometheus/prometheus/prompb"
+	"github.com/robfig/cron/v3"
 	"github.com/toolkits/pkg/logger"
 	"github.com/toolkits/pkg/str"
 )
@@ -78,6 +80,9 @@ type Processor struct {
 	HandleFireEventHook    HandleEventFunc
 	HandleRecoverEventHook HandleEventFunc
 	EventMuteHook          EventMuteHookFunc
+
+	ScheduleEntry    cron.Entry
+	PromEvalInterval int
 }
 
 func (p *Processor) Key() string {
@@ -89,9 +94,9 @@ func (p *Processor) DatasourceId() int64 {
 }
 
 func (p *Processor) Hash() string {
-	return str.MD5(fmt.Sprintf("%d_%d_%s_%d",
+	return str.MD5(fmt.Sprintf("%d_%s_%s_%d",
 		p.rule.Id,
-		p.rule.PromEvalInterval,
+		p.rule.CronPattern,
 		p.rule.RuleConfig,
 		p.datasourceId,
 	))
@@ -211,7 +216,6 @@ func (p *Processor) BuildEvent(anomalyPoint models.AnomalyPoint, from string, no
 	event.Callbacks = p.rule.Callbacks
 	event.CallbacksJSON = p.rule.CallbacksJSON
 	event.Annotations = p.rule.Annotations
-	event.AnnotationsJSON = make(map[string]string)
 	event.RuleConfig = p.rule.RuleConfig
 	event.RuleConfigJson = p.rule.RuleConfigJson
 	event.Severity = anomalyPoint.Severity
@@ -219,6 +223,11 @@ func (p *Processor) BuildEvent(anomalyPoint models.AnomalyPoint, from string, no
 	event.PromQl = anomalyPoint.Query
 	event.RecoverConfig = anomalyPoint.RecoverConfig
 	event.RuleHash = ruleHash
+
+	if err := json.Unmarshal([]byte(p.rule.Annotations), &event.AnnotationsJSON); err != nil {
+		event.AnnotationsJSON = make(map[string]string) // 解析失败时使用空 map
+		logger.Warningf("unmarshal annotations json failed: %v, rule: %d", err, p.rule.Id)
+	}
 
 	if p.target != "" {
 		if pt, exist := p.TargetCache.Get(p.target); exist {
@@ -420,6 +429,7 @@ func (p *Processor) handleEvent(events []*models.AlertCurEvent) {
 			p.pendingsUseByRecover.Set(event.Hash, event)
 		}
 
+		event.PromEvalInterval = p.PromEvalInterval
 		if p.rule.PromForDuration == 0 {
 			fireEvents = append(fireEvents, event)
 			if severity > event.Severity {

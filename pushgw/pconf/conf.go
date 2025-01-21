@@ -24,8 +24,13 @@ type Pushgw struct {
 }
 
 type WriterGlobalOpt struct {
-	QueueMaxSize int
-	QueuePopSize int
+	QueueMaxSize            int
+	QueuePopSize            int
+	AllQueueMaxSize         int
+	AllQueueMaxSizeInterval int
+	RetryCount              int
+	RetryInterval           int64
+	OverLimitStatusCode     int
 }
 
 type WriterOptions struct {
@@ -75,6 +80,26 @@ func (p *Pushgw) PreCheck() {
 
 	if p.WriterOpt.QueuePopSize <= 0 {
 		p.WriterOpt.QueuePopSize = 1000
+	}
+
+	if p.WriterOpt.AllQueueMaxSize <= 0 {
+		p.WriterOpt.AllQueueMaxSize = 5000000
+	}
+
+	if p.WriterOpt.AllQueueMaxSizeInterval <= 0 {
+		p.WriterOpt.AllQueueMaxSizeInterval = 200
+	}
+
+	if p.WriterOpt.RetryCount <= 0 {
+		p.WriterOpt.RetryCount = 1000
+	}
+
+	if p.WriterOpt.RetryInterval <= 0 {
+		p.WriterOpt.RetryInterval = 1
+	}
+
+	if p.WriterOpt.OverLimitStatusCode <= 0 {
+		p.WriterOpt.OverLimitStatusCode = 499
 	}
 
 	if p.WriteConcurrency <= 0 {

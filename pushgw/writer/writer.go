@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/ccfos/nightingale/v6/pkg/fasttime"
@@ -24,6 +25,8 @@ type WriterType struct {
 	Opts             pconf.WriterOptions
 	ForceUseServerTS bool
 	Client           api.Client
+	RetryCount       int
+	RetryInterval    int64 // 单位秒
 }
 
 func (w WriterType) writeRelabel(items []prompb.TimeSeries) []prompb.TimeSeries {
@@ -75,21 +78,32 @@ func (w WriterType) Write(key string, items []prompb.TimeSeries, headers ...map[
 		return
 	}
 
-	if err := w.Post(snappy.Encode(nil, data), headers...); err != nil {
+	for i := 0; i < w.RetryCount; i++ {
+		err := w.Post(snappy.Encode(nil, data), headers...)
+		if err == nil {
+			break
+		}
+
 		CounterWirteErrorTotal.WithLabelValues(key).Add(float64(len(items)))
-		logger.Warningf("post to %s got error: %v", w.Opts.Url, err)
-		logger.Warning("example timeseries:", items[0].String())
+		logger.Warningf("post to %s got error: %v in %d times", w.Opts.Url, err, i)
+
+		if i == 0 {
+			logger.Warning("example timeseries:", items[0].String())
+		}
+
+		time.Sleep(time.Duration(w.RetryInterval) * time.Second)
 	}
 }
 
 func (w WriterType) Post(req []byte, headers ...map[string]string) error {
 	urls := strings.Split(w.Opts.Url, ",")
 	var err error
+	var newRequestErr error
 	var httpReq *http.Request
 	for _, url := range urls {
-		httpReq, err = http.NewRequest("POST", url, bytes.NewReader(req))
-		if err != nil {
-			logger.Warningf("create remote write:%s request got error: %s", url, err.Error())
+		httpReq, newRequestErr = http.NewRequest("POST", url, bytes.NewReader(req))
+		if newRequestErr != nil {
+			logger.Warningf("create remote write:%s request got error: %s", url, newRequestErr.Error())
 			continue
 		}
 
@@ -125,12 +139,18 @@ func (w WriterType) Post(req []byte, headers ...map[string]string) error {
 			continue
 		}
 
-		if resp.StatusCode >= 400 {
+		if resp.StatusCode >= 400 && resp.StatusCode < 500 {
+			logger.Warningf("push data with remote write:%s request got status code: %v, response body: %s", url, resp.StatusCode, string(body))
+			continue
+		}
+
+		if resp.StatusCode >= 500 {
 			err = fmt.Errorf("push data with remote write:%s request got status code: %v, response body: %s", url, resp.StatusCode, string(body))
 			logger.Warning(err)
 			continue
 		}
 
+		err = nil
 		break
 	}
 
@@ -138,9 +158,10 @@ func (w WriterType) Post(req []byte, headers ...map[string]string) error {
 }
 
 type WritersType struct {
-	pushgw   pconf.Pushgw
-	backends map[string]WriterType
-	queues   map[string]*IdentQueue
+	pushgw      pconf.Pushgw
+	backends    map[string]WriterType
+	queues      map[string]*IdentQueue
+	AllQueueLen atomic.Value
 	sync.RWMutex
 }
 
@@ -157,17 +178,35 @@ func (ws *WritersType) ReportQueueStats(ident string, identQueue *IdentQueue) (i
 		if count > ws.pushgw.IdentStatsThreshold {
 			GaugeSampleQueueSize.WithLabelValues(ident).Set(float64(count))
 		}
+
+		GaugeAllQueueSize.Set(float64(ws.AllQueueLen.Load().(int)))
+	}
+}
+
+func (ws *WritersType) SetAllQueueLen() {
+	for {
+		curMetricLen := 0
+		ws.RLock()
+		for _, q := range ws.queues {
+			curMetricLen += q.list.Len()
+		}
+		ws.RUnlock()
+		ws.AllQueueLen.Store(curMetricLen)
+		time.Sleep(time.Duration(ws.pushgw.WriterOpt.AllQueueMaxSizeInterval) * time.Millisecond)
 	}
 }
 
 func NewWriters(pushgwConfig pconf.Pushgw) *WritersType {
 	writers := &WritersType{
-		backends: make(map[string]WriterType),
-		queues:   make(map[string]*IdentQueue),
-		pushgw:   pushgwConfig,
+		backends:    make(map[string]WriterType),
+		queues:      make(map[string]*IdentQueue),
+		pushgw:      pushgwConfig,
+		AllQueueLen: atomic.Value{},
 	}
 
 	writers.Init()
+
+	go writers.SetAllQueueLen()
 	go writers.CleanExpQueue()
 	return writers
 }
@@ -197,7 +236,7 @@ func (ws *WritersType) CleanExpQueue() {
 	}
 }
 
-func (ws *WritersType) PushSample(ident string, v interface{}) {
+func (ws *WritersType) PushSample(ident string, v interface{}) error {
 	ws.RLock()
 	identQueue := ws.queues[ident]
 	ws.RUnlock()
@@ -217,11 +256,20 @@ func (ws *WritersType) PushSample(ident string, v interface{}) {
 	}
 
 	identQueue.ts = time.Now().Unix()
+	curLen := ws.AllQueueLen.Load().(int)
+	if curLen > ws.pushgw.WriterOpt.AllQueueMaxSize {
+		err := fmt.Errorf("write queue full, metric count over limit: %d", curLen)
+		logger.Warning(err)
+		CounterPushQueueOverLimitTotal.Inc()
+		return err
+	}
+
 	succ := identQueue.list.PushFront(v)
 	if !succ {
 		logger.Warningf("Write channel(%s) full, current channel size: %d", ident, identQueue.list.Len())
 		CounterPushQueueErrorTotal.WithLabelValues(ident).Inc()
 	}
+	return nil
 }
 
 func (ws *WritersType) StartConsumer(identQueue *IdentQueue) {
@@ -245,6 +293,7 @@ func (ws *WritersType) StartConsumer(identQueue *IdentQueue) {
 
 func (ws *WritersType) Init() error {
 	opts := ws.pushgw.Writers
+	ws.AllQueueLen.Store(0)
 
 	for i := 0; i < len(opts); i++ {
 		tlsConf, err := opts[i].ClientConfig.TLSConfig()
@@ -284,6 +333,8 @@ func (ws *WritersType) Init() error {
 			Opts:             opts[i],
 			Client:           cli,
 			ForceUseServerTS: ws.pushgw.ForceUseServerTS,
+			RetryCount:       ws.pushgw.WriterOpt.RetryCount,
+			RetryInterval:    ws.pushgw.WriterOpt.RetryInterval,
 		}
 
 		ws.Put(opts[i].Url, writer)
