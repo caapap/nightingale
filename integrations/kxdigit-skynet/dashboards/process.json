@@ -1,74 +1,38 @@
 {
+    "id": 0,
+    "group_id": 0,
     "name": "Ant监控-进程监控",
-    "tags": "",
     "ident": "",
+    "tags": "",
+    "create_at": 0,
+    "create_by": "",
+    "update_at": 0,
+    "update_by": "",
     "configs": {
-        "version": "3.0.0",
         "links": [],
-        "var": [
-            {
-                "name": "datasource",
-                "type": "datasource",
-                "definition": "prometheus",
-                "regex": "/.*skynet.*/"
-            },
-            {
-                "type": "query",
-                "name": "processes",
-                "definition": "label_values(namedprocess_namegroup_cpu_seconds_total,groupname)",
-                "allValue": ".+",
-                "allOption": true,
-                "multi": true,
-                "reg": "",
-                "hide": false,
-                "datasource": {
-                    "cate": "prometheus",
-                    "value": "${datasource}"
-                }
-            },
-            {
-                "type": "custom",
-                "name": "topN",
-                "definition": "1,3,5,10,20,30,50,100,1000,10000",
-                "allValue": null,
-                "allOption": false,
-                "multi": false,
-                "hide": false
-            },
-            {
-                "name": "__interval",
-                "label": "时间段",
-                "type": "custom",
-                "hide": false,
-                "definition": "1s,5s,1m,5m,1h,6h,1d"
-            }
-        ],
         "panels": [
             {
-                "version": "3.0.0",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "1e1f20ab-3562-464b-96a0-33b85a6fde3d",
-                "type": "timeseries",
-                "name": "进程数",
-                "links": [],
                 "layout": {
                     "h": 7,
+                    "i": "1e1f20ab-3562-464b-96a0-33b85a6fde3d",
                     "w": 12,
                     "x": 0,
-                    "y": 0,
-                    "i": "1e1f20ab-3562-464b-96a0-33b85a6fde3d"
+                    "y": 0
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,namedprocess_namegroup_num_procs{groupname=~\"$processes\"})",
-                        "legend": "{{groupname}}"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "进程数",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -76,69 +40,60 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "topk($topN,namedprocess_namegroup_num_procs{groupname=~\"$processes\"})",
+                        "legend": "{{groupname}}",
+                        "refId": "A"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "type": "timeseries",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "showPoints": "none",
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "07f6279e-53a4-4f58-8d70-3ae75efdee08",
                 "layout": {
                     "h": 7,
+                    "i": "07f6279e-53a4-4f58-8d70-3ae75efdee08",
                     "w": 12,
                     "x": 12,
-                    "y": 0,
-                    "i": "07f6279e-53a4-4f58-8d70-3ae75efdee08"
+                    "y": 0
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,rate(namedprocess_namegroup_cpu_seconds_total{groupname=~\"$processes\",mode=~'user'}[$__interval]))",
-                        "legend": "{{mode}}({{groupname}})",
-                        "maxDataPoints": 240
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "topk($topN,rate(namedprocess_namegroup_cpu_seconds_total{groupname=~\"$processes\",mode=~'system'}[$__interval]))",
-                        "legend": "{{mode}}({{groupname}})",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "cpu",
                 "links": [],
                 "maxPerRow": 4,
+                "name": "cpu",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
+                        "behaviour": "showItem",
                         "displayMode": "hidden",
                         "heightInPercentage": 30,
                         "placement": "bottom",
-                        "behaviour": "showItem",
                         "selectMode": "single"
                     },
                     "standardOptions": {},
@@ -146,25 +101,15 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 1,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
                     },
-                    "showPoints": "none",
-                    "pointSize": 5
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
+                    }
                 },
                 "overrides": [
                     {
@@ -175,48 +120,64 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "topk($topN,rate(namedprocess_namegroup_cpu_seconds_total{groupname=~\"$processes\",mode=~'user'}[$__interval]))",
+                        "legend": "{{mode}}({{groupname}})",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "topk($topN,rate(namedprocess_namegroup_cpu_seconds_total{groupname=~\"$processes\",mode=~'system'}[$__interval]))",
+                        "legend": "{{mode}}({{groupname}})",
+                        "maxDataPoints": 240,
+                        "refId": "B"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "type": "timeseries",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "showPoints": "none",
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "77c82d95-f50f-473a-845a-425c5562ff3c",
                 "layout": {
                     "h": 7,
+                    "i": "77c82d95-f50f-473a-845a-425c5562ff3c",
                     "w": 12,
                     "x": 0,
-                    "y": 7,
-                    "i": "77c82d95-f50f-473a-845a-425c5562ff3c"
+                    "y": 7
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,rate(namedprocess_namegroup_read_bytes_total{groupname=~\"$processes\"}[$__interval]))",
-                        "legend": "{{groupname}}",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "IO-读取字节数",
                 "links": [],
                 "maxPerRow": 4,
+                "name": "IO-读取字节数",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
+                        "behaviour": "showItem",
                         "displayMode": "hidden",
                         "heightInPercentage": 30,
                         "placement": "bottom",
-                        "behaviour": "showItem",
                         "selectMode": "single"
                     },
                     "standardOptions": {},
@@ -224,25 +185,15 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 2,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
                     },
-                    "showPoints": "none",
-                    "pointSize": 5
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
+                    }
                 },
                 "overrides": [
                     {
@@ -253,48 +204,58 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "topk($topN,rate(namedprocess_namegroup_read_bytes_total{groupname=~\"$processes\"}[$__interval]))",
+                        "legend": "{{groupname}}",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "type": "timeseries",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "showPoints": "none",
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "1ef75a3f-c092-43ec-ba24-cccc2b083340",
                 "layout": {
                     "h": 7,
+                    "i": "1ef75a3f-c092-43ec-ba24-cccc2b083340",
                     "w": 12,
                     "x": 12,
-                    "y": 7,
-                    "i": "1ef75a3f-c092-43ec-ba24-cccc2b083340"
+                    "y": 7
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,rate(namedprocess_namegroup_write_bytes_total{groupname=~\"$processes\"}[$__interval]))",
-                        "legend": "{{groupname}}",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "IO-写入字节数",
                 "links": [],
                 "maxPerRow": 4,
+                "name": "IO-写入字节数",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
+                        "behaviour": "showItem",
                         "displayMode": "hidden",
                         "heightInPercentage": 30,
                         "placement": "bottom",
-                        "behaviour": "showItem",
                         "selectMode": "single"
                     },
                     "standardOptions": {},
@@ -302,25 +263,15 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 2,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
                     },
-                    "showPoints": "none",
-                    "pointSize": 5
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
+                    }
                 },
                 "overrides": [
                     {
@@ -331,33 +282,46 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "topk($topN,rate(namedprocess_namegroup_write_bytes_total{groupname=~\"$processes\"}[$__interval]))",
+                        "legend": "{{groupname}}",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "fde80685-f127-48bd-aa7f-df209533628d",
-                "type": "timeseries",
-                "name": "常驻内存",
-                "links": [],
                 "layout": {
                     "h": 7,
+                    "i": "fde80685-f127-48bd-aa7f-df209533628d",
                     "w": 12,
                     "x": 0,
-                    "y": 14,
-                    "i": "fde80685-f127-48bd-aa7f-df209533628d"
+                    "y": 14
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,namedprocess_namegroup_memory_bytes{groupname=~\"$processes\", memtype=\"resident\"})",
-                        "legend": "{{groupname}}"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "常驻内存",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -365,48 +329,48 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "topk($topN,namedprocess_namegroup_memory_bytes{groupname=~\"$processes\", memtype=\"resident\"})",
+                        "legend": "{{groupname}}",
+                        "refId": "A"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "1dd1a8de-8bbe-4d59-a26a-25be18a18b3c",
-                "type": "timeseries",
-                "name": "虚拟内存",
-                "links": [],
                 "layout": {
                     "h": 7,
+                    "i": "1dd1a8de-8bbe-4d59-a26a-25be18a18b3c",
                     "w": 12,
                     "x": 12,
-                    "y": 14,
-                    "i": "1dd1a8de-8bbe-4d59-a26a-25be18a18b3c"
+                    "y": 14
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "topk($topN,namedprocess_namegroup_memory_bytes{groupname=~\"$processes\", memtype=\"virtual\"})",
-                        "legend": "{{groupname}}"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "虚拟内存",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -414,23 +378,71 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "topk($topN,namedprocess_namegroup_memory_bytes{groupname=~\"$processes\", memtype=\"virtual\"})",
+                        "legend": "{{groupname}}",
+                        "refId": "A"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             }
-        ]
-    }
+        ],
+        "var": [
+            {
+                "definition": "prometheus",
+                "name": "datasource",
+                "regex": "/.*skynet.*/",
+                "type": "datasource"
+            },
+            {
+                "allOption": true,
+                "allValue": ".+",
+                "datasource": {
+                    "cate": "prometheus",
+                    "value": "${datasource}"
+                },
+                "definition": "label_values(namedprocess_namegroup_cpu_seconds_total,groupname)",
+                "hide": false,
+                "multi": true,
+                "name": "processes",
+                "reg": "",
+                "type": "query"
+            },
+            {
+                "allOption": false,
+                "allValue": null,
+                "definition": "1,3,5,10,20,30,50,100,1000,10000",
+                "hide": false,
+                "multi": false,
+                "name": "topN",
+                "type": "custom"
+            },
+            {
+                "definition": "1s,5s,1m,5m,1h,6h,1d",
+                "hide": false,
+                "label": "时间段",
+                "name": "__interval",
+                "type": "custom"
+            }
+        ],
+        "version": "3.0.0"
+    },
+    "public": 0,
+    "public_cate": 0,
+    "bgids": null,
+    "built_in": 0,
+    "hide": 0,
+    "uuid": 1737621553135179
 }

@@ -1,100 +1,84 @@
 {
+    "id": 0,
+    "group_id": 0,
     "name": "Ant监控-主机监控",
-    "tags": "",
     "ident": "",
+    "tags": "",
+    "create_at": 0,
+    "create_by": "",
+    "update_at": 0,
+    "update_by": "",
     "configs": {
-        "version": "3.0.0",
         "links": [],
-        "var": [
-            {
-                "name": "datasource",
-                "type": "datasource",
-                "definition": "prometheus",
-                "regex": "/.*skynet.*/",
-                "defaultValue": 3
-            },
-            {
-                "type": "query",
-                "name": "maxmount",
-                "definition": "query_result(topk(1,sort_desc (max(node_filesystem_size_bytes{_ip='$ip',fstype=~\"ext4|xfs\"}) by (mountpoint))))",
-                "allValue": null,
-                "allOption": false,
-                "multi": false,
-                "reg": "/.*\\\"(.*)\\\".*/",
-                "hide": true,
-                "datasource": {
-                    "cate": "prometheus",
-                    "value": "${datasource}"
-                }
-            },
-            {
-                "type": "query",
-                "name": "ip",
-                "definition": "label_values(up{job='node-exporter@ant-mon'},instance)",
-                "allValue": null,
-                "allOption": false,
-                "multi": false,
-                "reg": "(.+):(\\d+)",
-                "hide": false,
-                "datasource": {
-                    "cate": "prometheus",
-                    "value": "${datasource}"
-                }
-            },
-            {
-                "type": "custom",
-                "name": "topN",
-                "definition": "5,6,7,8,9,10,15,20,30,50",
-                "allValue": null,
-                "allOption": false,
-                "multi": false,
-                "hide": false
-            }
-        ],
         "panels": [
             {
-                "version": "3.0.0",
-                "id": "e91c72f6-7ba2-4f1b-a0f7-8682152ae3b6",
-                "type": "text",
-                "name": "$ip",
-                "links": [],
-                "layout": {
-                    "h": 1,
-                    "w": 24,
-                    "x": 0,
-                    "y": 0,
-                    "i": "e91c72f6-7ba2-4f1b-a0f7-8682152ae3b6",
-                    "isResizable": true
-                },
-                "targets": [],
-                "options": {},
                 "custom": {
                     "version": "3.0.0"
                 },
-                "maxPerRow": 6,
-                "repeat": "node",
                 "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "datasourceValue": "${datasource}",
+                "id": "e91c72f6-7ba2-4f1b-a0f7-8682152ae3b6",
+                "layout": {
+                    "h": 1,
+                    "i": "e91c72f6-7ba2-4f1b-a0f7-8682152ae3b6",
+                    "isResizable": true,
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "links": [],
+                "maxPerRow": 6,
+                "name": "$ip",
+                "options": {},
+                "repeat": "node",
+                "targets": [],
+                "type": "text",
+                "version": "3.0.0"
             },
             {
-                "type": "stat",
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colSpan": 1,
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "textMode": "value",
+                    "textSize": {},
+                    "valueField": "Value"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
                 "id": "666fb548-62fd-4668-87ef-42e112d8028a",
                 "layout": {
                     "h": 4,
+                    "i": "666fb548-62fd-4668-87ef-42e112d8028a",
+                    "isResizable": true,
                     "w": 3,
                     "x": 0,
-                    "y": 1,
-                    "i": "666fb548-62fd-4668-87ef-42e112d8028a",
-                    "isResizable": true
+                    "y": 1
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                "links": [],
+                "maxPerRow": 4,
+                "name": "系统运行时间",
+                "options": {
+                    "standardOptions": {
+                        "util": "seconds"
+                    },
+                    "thresholds": {
+                        "steps": [
+                            {
+                                "color": "#634CD9",
+                                "type": "base",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
                 "targets": [
                     {
-                        "refId": "A",
                         "expr": "time() - node_boot_time_seconds{instance=~'$ip:\\\\d+'}",
-                        "maxDataPoints": 240
+                        "maxDataPoints": 240,
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
@@ -103,54 +87,52 @@
                         "options": {}
                     }
                 ],
-                "name": "系统运行时间",
-                "links": [],
-                "description": "",
-                "maxPerRow": 4,
-                "custom": {
-                    "textMode": "value",
-                    "graphMode": "none",
-                    "colorMode": "value",
-                    "calc": "lastNotNull",
-                    "valueField": "Value",
-                    "colSpan": 1,
-                    "textSize": {}
-                },
-                "options": {
-                    "thresholds": {
-                        "steps": [
-                            {
-                                "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
-                            }
-                        ]
-                    },
-                    "standardOptions": {
-                        "util": "seconds"
-                    }
-                }
+                "type": "stat",
+                "version": "3.0.0"
             },
             {
-                "type": "stat",
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colSpan": 1,
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "textMode": "value",
+                    "textSize": {},
+                    "valueField": "Value"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
                 "id": "7d64eb34-018e-4f92-a2f9-b41b5a6e871f",
                 "layout": {
                     "h": 2,
+                    "i": "7d64eb34-018e-4f92-a2f9-b41b5a6e871f",
+                    "isResizable": true,
                     "w": 3,
                     "x": 3,
-                    "y": 1,
-                    "i": "7d64eb34-018e-4f92-a2f9-b41b5a6e871f",
-                    "isResizable": true
+                    "y": 1
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                "links": [],
+                "maxPerRow": 6,
+                "name": "CPU 核数",
+                "options": {
+                    "standardOptions": {},
+                    "thresholds": {
+                        "steps": [
+                            {
+                                "color": "#634CD9",
+                                "type": "base",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
                 "targets": [
                     {
-                        "refId": "A",
                         "expr": "count(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='system'}) by (cpu))",
                         "legend": "",
-                        "maxDataPoints": 240
+                        "maxDataPoints": 240,
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
@@ -159,52 +141,54 @@
                         "options": {}
                     }
                 ],
-                "name": "CPU 核数",
-                "links": [],
-                "description": "",
-                "maxPerRow": 6,
-                "custom": {
-                    "textMode": "value",
-                    "graphMode": "none",
-                    "colorMode": "value",
-                    "calc": "lastNotNull",
-                    "valueField": "Value",
-                    "colSpan": 1,
-                    "textSize": {}
-                },
-                "options": {
-                    "thresholds": {
-                        "steps": [
-                            {
-                                "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
-                            }
-                        ]
-                    },
-                    "standardOptions": {}
-                }
+                "type": "stat",
+                "version": "3.0.0"
             },
             {
-                "type": "stat",
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colSpan": 1,
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "textMode": "value",
+                    "textSize": {},
+                    "valueField": "Value"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
                 "id": "6fdf5168-3ae9-4c89-8a2c-31a84edb3f64",
                 "layout": {
                     "h": 2,
+                    "i": "6fdf5168-3ae9-4c89-8a2c-31a84edb3f64",
+                    "isResizable": true,
                     "w": 3,
                     "x": 6,
-                    "y": 1,
-                    "i": "6fdf5168-3ae9-4c89-8a2c-31a84edb3f64",
-                    "isResizable": true
+                    "y": 1
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                "links": [],
+                "maxPerRow": 6,
+                "name": "最大打开文件数",
+                "options": {
+                    "standardOptions": {
+                        "util": "none"
+                    },
+                    "thresholds": {
+                        "steps": [
+                            {
+                                "color": "#634CD9",
+                                "type": "base",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
                 "targets": [
                     {
-                        "refId": "A",
                         "expr": "process_max_fds{instance=~'$ip:\\\\d+',job=\"node-exporter@ant-mon\"}",
                         "legend": "",
-                        "maxDataPoints": 240
+                        "maxDataPoints": 240,
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
@@ -213,65 +197,45 @@
                         "options": {}
                     }
                 ],
-                "name": "最大打开文件数",
-                "links": [],
-                "description": "",
-                "maxPerRow": 6,
-                "custom": {
-                    "textMode": "value",
-                    "graphMode": "none",
-                    "colorMode": "value",
-                    "calc": "lastNotNull",
-                    "valueField": "Value",
-                    "colSpan": 1,
-                    "textSize": {}
-                },
-                "options": {
-                    "thresholds": {
-                        "steps": [
-                            {
-                                "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
-                            }
-                        ]
-                    },
-                    "standardOptions": {
-                        "util": "none"
-                    }
-                }
+                "type": "stat",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
-                "id": "642f28a2-67ed-4547-b39d-5514ccd4f1fc",
-                "type": "gauge",
-                "name": "CPU使用率（5m）",
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colorMode": "value",
+                    "textMode": "value",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "description": "",
-                "links": [],
+                "id": "642f28a2-67ed-4547-b39d-5514ccd4f1fc",
                 "layout": {
                     "h": 4,
+                    "i": "642f28a2-67ed-4547-b39d-5514ccd4f1fc",
+                    "isResizable": true,
                     "w": 3,
                     "x": 9,
-                    "y": 1,
-                    "i": "642f28a2-67ed-4547-b39d-5514ccd4f1fc",
-                    "isResizable": true
+                    "y": 1
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "100 - (avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"idle\"}[5m])) * 100)",
-                        "legend": ""
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 12,
+                "name": "CPU使用率（5m）",
                 "options": {
+                    "legend": {
+                        "displayMode": "list"
+                    },
+                    "standardOptions": {
+                        "util": "percent"
+                    },
                     "thresholds": {
                         "mode": "absolute",
-                        "style": "line",
                         "steps": [
                             {
                                 "color": "rgba(50, 172, 45, 0.97)",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             },
                             {
                                 "color": "rgba(237, 129, 40, 0.89)",
@@ -281,60 +245,60 @@
                                 "color": "rgba(245, 54, 54, 0.9)",
                                 "value": 80
                             }
-                        ]
-                    },
-                    "standardOptions": {
-                        "util": "percent"
-                    },
-                    "legend": {
-                        "displayMode": "list"
+                        ],
+                        "style": "line"
                     },
                     "tooltip": {
                         "mode": "all",
                         "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "textMode": "value",
-                    "calc": "lastNotNull",
-                    "colorMode": "value"
-                },
-                "maxPerRow": 12,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
-            },
-            {
-                "version": "3.0.0",
-                "id": "a35e34bc-1a58-4045-a2a0-1f620d187690",
-                "type": "gauge",
-                "name": "CPU iowait（5m）",
-                "description": "",
-                "links": [],
-                "layout": {
-                    "h": 4,
-                    "w": 3,
-                    "x": 12,
-                    "y": 1,
-                    "i": "a35e34bc-1a58-4045-a2a0-1f620d187690",
-                    "isResizable": true
-                },
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"iowait\"}[5m])) * 100",
-                        "legend": ""
+                        "expr": "100 - (avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"idle\"}[5m])) * 100)",
+                        "legend": "",
+                        "refId": "A"
                     }
                 ],
+                "type": "gauge",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colorMode": "value",
+                    "textMode": "value",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
+                "id": "a35e34bc-1a58-4045-a2a0-1f620d187690",
+                "layout": {
+                    "h": 4,
+                    "i": "a35e34bc-1a58-4045-a2a0-1f620d187690",
+                    "isResizable": true,
+                    "w": 3,
+                    "x": 12,
+                    "y": 1
+                },
+                "links": [],
+                "maxPerRow": 12,
+                "name": "CPU iowait（5m）",
                 "options": {
+                    "legend": {
+                        "displayMode": "list"
+                    },
+                    "standardOptions": {
+                        "util": "percent"
+                    },
                     "thresholds": {
                         "mode": "absolute",
-                        "style": "line",
                         "steps": [
                             {
                                 "color": "rgba(50, 172, 45, 0.97)",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             },
                             {
                                 "color": "rgba(237, 129, 40, 0.89)",
@@ -344,59 +308,117 @@
                                 "color": "rgba(245, 54, 54, 0.9)",
                                 "value": 50
                             }
-                        ]
-                    },
-                    "standardOptions": {
-                        "util": "percent"
-                    },
-                    "legend": {
-                        "displayMode": "list"
+                        ],
+                        "style": "line"
                     },
                     "tooltip": {
                         "mode": "all",
                         "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "textMode": "value",
-                    "calc": "lastNotNull",
-                    "colorMode": "value"
-                },
-                "maxPerRow": 12,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
-            },
-            {
-                "version": "3.0.0",
-                "id": "6ed7e074-c482-4dec-ae8b-ad0f105de782",
-                "type": "gauge",
-                "name": "内存使用率",
-                "description": "",
-                "links": [],
-                "layout": {
-                    "h": 4,
-                    "w": 3,
-                    "x": 15,
-                    "y": 1,
-                    "i": "6ed7e074-c482-4dec-ae8b-ad0f105de782",
-                    "isResizable": true
-                },
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "(1 - node_memory_MemAvailable_bytes{instance=~\"$ip:\\\\d+\"} / node_memory_MemTotal_bytes{instance=~\"$ip:\\\\d+\"}) * 100"
+                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"iowait\"}[5m])) * 100",
+                        "legend": "",
+                        "refId": "A"
                     }
                 ],
+                "type": "gauge",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colorMode": "value",
+                    "textMode": "value",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
+                "id": "6ed7e074-c482-4dec-ae8b-ad0f105de782",
+                "layout": {
+                    "h": 4,
+                    "i": "6ed7e074-c482-4dec-ae8b-ad0f105de782",
+                    "isResizable": true,
+                    "w": 3,
+                    "x": 15,
+                    "y": 1
+                },
+                "links": [],
+                "maxPerRow": 6,
+                "name": "内存使用率",
                 "options": {
+                    "legend": {
+                        "displayMode": "list"
+                    },
+                    "standardOptions": {
+                        "util": "percent"
+                    },
                     "thresholds": {
                         "mode": "absolute",
-                        "style": "line",
                         "steps": [
                             {
                                 "color": "rgba(50, 172, 45, 0.97)",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
+                            },
+                            {
+                                "color": "rgba(237, 129, 40, 0.89)",
+                                "value": 80
+                            },
+                            {
+                                "color": "rgba(245, 54, 54, 0.9)",
+                                "value": 90
+                            }
+                        ],
+                        "style": "line"
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
+                    }
+                },
+                "targets": [
+                    {
+                        "expr": "(1 - node_memory_MemAvailable_bytes{instance=~\"$ip:\\\\d+\"} / node_memory_MemTotal_bytes{instance=~\"$ip:\\\\d+\"}) * 100",
+                        "refId": "A"
+                    }
+                ],
+                "type": "gauge",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "calc": "lastNotNull",
+                    "textMode": "value",
+                    "valueField": "Value"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
+                "id": "2be5f1cd-438e-4bfa-9c60-cab37e0c1754",
+                "layout": {
+                    "h": 4,
+                    "i": "2be5f1cd-438e-4bfa-9c60-cab37e0c1754",
+                    "isResizable": true,
+                    "w": 3,
+                    "x": 18,
+                    "y": 1
+                },
+                "links": [],
+                "maxPerRow": 6,
+                "name": "当前打开的文件描述符",
+                "options": {
+                    "standardOptions": {
+                        "util": "percent"
+                    },
+                    "thresholds": {
+                        "steps": [
+                            {
+                                "color": "rgba(50, 172, 45, 0.97)",
+                                "type": "base",
+                                "value": null
                             },
                             {
                                 "color": "rgba(237, 129, 40, 0.89)",
@@ -407,47 +429,13 @@
                                 "value": 90
                             }
                         ]
-                    },
-                    "standardOptions": {
-                        "util": "percent"
-                    },
-                    "legend": {
-                        "displayMode": "list"
-                    },
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "textMode": "value",
-                    "calc": "lastNotNull",
-                    "colorMode": "value"
-                },
-                "maxPerRow": 6,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
-            },
-            {
-                "type": "gauge",
-                "id": "2be5f1cd-438e-4bfa-9c60-cab37e0c1754",
-                "layout": {
-                    "h": 4,
-                    "w": 3,
-                    "x": 18,
-                    "y": 1,
-                    "i": "2be5f1cd-438e-4bfa-9c60-cab37e0c1754",
-                    "isResizable": true
-                },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
                 "targets": [
                     {
-                        "refId": "B",
                         "expr": "( node_filefd_allocated{instance=~'$ip:\\\\d+'} / process_max_fds{instance=~'$ip:\\\\d+',job=\"node-exporter@ant-mon\"} ) * 100",
-                        "maxDataPoints": 240
+                        "maxDataPoints": 240,
+                        "refId": "B"
                     }
                 ],
                 "transformations": [
@@ -456,68 +444,45 @@
                         "options": {}
                     }
                 ],
-                "name": "当前打开的文件描述符",
-                "links": [],
-                "description": "",
-                "maxPerRow": 6,
+                "type": "gauge",
+                "version": "3.0.0"
+            },
+            {
                 "custom": {
-                    "textMode": "value",
                     "calc": "lastNotNull",
-                    "valueField": "Value"
+                    "colorMode": "value",
+                    "textMode": "value",
+                    "version": "3.0.0"
                 },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
+                "id": "35f20692-9034-48e2-864b-39bd172d0921",
+                "layout": {
+                    "h": 4,
+                    "i": "35f20692-9034-48e2-864b-39bd172d0921",
+                    "isResizable": true,
+                    "w": 3,
+                    "x": 21,
+                    "y": 1
+                },
+                "links": [],
+                "maxPerRow": 6,
+                "name": "根分区使用率",
                 "options": {
-                    "thresholds": {
-                        "steps": [
-                            {
-                                "color": "rgba(50, 172, 45, 0.97)",
-                                "value": null,
-                                "type": "base"
-                            },
-                            {
-                                "color": "rgba(237, 129, 40, 0.89)",
-                                "value": 80
-                            },
-                            {
-                                "color": "rgba(245, 54, 54, 0.9)",
-                                "value": 90
-                            }
-                        ]
+                    "legend": {
+                        "displayMode": "list"
                     },
                     "standardOptions": {
                         "util": "percent"
-                    }
-                }
-            },
-            {
-                "version": "3.0.0",
-                "id": "35f20692-9034-48e2-864b-39bd172d0921",
-                "type": "gauge",
-                "name": "根分区使用率",
-                "description": "",
-                "links": [],
-                "layout": {
-                    "h": 4,
-                    "w": 3,
-                    "x": 21,
-                    "y": 1,
-                    "i": "35f20692-9034-48e2-864b-39bd172d0921",
-                    "isResizable": true
-                },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "100 - ((node_filesystem_avail_bytes{instance=~'$ip:\\\\d+',mountpoint=\"/\",fstype=~\"ext4|xfs\"} * 100) / node_filesystem_size_bytes {instance=~'$ip:\\\\d+',mountpoint=\"/\",fstype=~\"ext4|xfs\"})"
-                    }
-                ],
-                "options": {
+                    },
                     "thresholds": {
                         "mode": "absolute",
-                        "style": "line",
                         "steps": [
                             {
                                 "color": "rgba(50, 172, 45, 0.97)",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             },
                             {
                                 "color": "rgba(237, 129, 40, 0.89)",
@@ -527,114 +492,68 @@
                                 "color": "rgba(245, 54, 54, 0.9)",
                                 "value": 90
                             }
-                        ]
-                    },
-                    "standardOptions": {
-                        "util": "percent"
-                    },
-                    "legend": {
-                        "displayMode": "list"
+                        ],
+                        "style": "line"
                     },
                     "tooltip": {
                         "mode": "all",
                         "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "textMode": "value",
-                    "calc": "lastNotNull",
-                    "colorMode": "value"
-                },
-                "maxPerRow": 6,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "100 - ((node_filesystem_avail_bytes{instance=~'$ip:\\\\d+',mountpoint=\"/\",fstype=~\"ext4|xfs\"} * 100) / node_filesystem_size_bytes {instance=~'$ip:\\\\d+',mountpoint=\"/\",fstype=~\"ext4|xfs\"})",
+                        "refId": "A"
+                    }
+                ],
+                "type": "gauge",
+                "version": "3.0.0"
             },
             {
-                "type": "stat",
+                "custom": {
+                    "calc": "lastNotNull",
+                    "colSpan": 1,
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "textMode": "value",
+                    "textSize": {},
+                    "valueField": "Value"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
                 "id": "766c74ee-7559-4614-a896-ee234844970e",
                 "layout": {
                     "h": 2,
+                    "i": "766c74ee-7559-4614-a896-ee234844970e",
+                    "isResizable": true,
                     "w": 3,
                     "x": 3,
-                    "y": 3,
-                    "i": "766c74ee-7559-4614-a896-ee234844970e",
-                    "isResizable": true
+                    "y": 3
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'}",
-                        "legend": "{{instance}}",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "内存总量",
                 "links": [],
-                "description": "",
                 "maxPerRow": 6,
-                "custom": {
-                    "textMode": "value",
-                    "graphMode": "none",
-                    "colorMode": "value",
-                    "calc": "lastNotNull",
-                    "valueField": "Value",
-                    "colSpan": 1,
-                    "textSize": {}
-                },
+                "name": "内存总量",
                 "options": {
+                    "standardOptions": {
+                        "util": "bytesIEC"
+                    },
                     "thresholds": {
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    },
-                    "standardOptions": {
-                        "util": "bytesIEC"
                     }
-                }
-            },
-            {
-                "type": "timeseries",
-                "id": "5966bb36-0ace-4950-95bf-312971cd35d2",
-                "layout": {
-                    "h": 7,
-                    "w": 24,
-                    "x": 0,
-                    "y": 5,
-                    "i": "5966bb36-0ace-4950-95bf-312971cd35d2",
-                    "isResizable": true
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "node_load1{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
-                        "legend": "1分钟"
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "node_load5{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
-                        "legend": "5分钟"
-                    },
-                    {
-                        "refId": "C",
-                        "expr": "node_load15{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
-                        "legend": "15分钟"
+                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'}",
+                        "legend": "{{instance}}",
+                        "maxDataPoints": 240,
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
@@ -643,40 +562,55 @@
                         "options": {}
                     }
                 ],
-                "name": "系统平均负载/CPU核数",
+                "type": "stat",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "id": "5966bb36-0ace-4950-95bf-312971cd35d2",
+                "layout": {
+                    "h": 7,
+                    "i": "5966bb36-0ace-4950-95bf-312971cd35d2",
+                    "isResizable": true,
+                    "w": 24,
+                    "x": 0,
+                    "y": 5
+                },
                 "links": [],
                 "maxPerRow": 6,
+                "name": "系统平均负载/CPU核数",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
+                        "behaviour": "showItem",
                         "displayMode": "list",
-                        "placement": "right",
-                        "behaviour": "showItem"
+                        "placement": "right"
                     },
                     "standardOptions": {},
                     "thresholds": {
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 1,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
                 "overrides": [
@@ -688,57 +622,62 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
-            },
-            {
-                "type": "table",
-                "id": "098e5363-5563-4581-a723-d5f867025d26",
-                "layout": {
-                    "h": 6,
-                    "w": 12,
-                    "x": 0,
-                    "y": 12,
-                    "i": "098e5363-5563-4581-a723-d5f867025d26",
-                    "isResizable": true
-                },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                ],
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "sort(topk($topN,avg(xray_proc_cpu_perc_of_all{instance=~'$ip:\\\\d+'}) by (pid,aid)))",
-                        "maxDataPoints": 240
+                        "expr": "node_load1{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
+                        "legend": "1分钟",
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "node_load5{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
+                        "legend": "5分钟",
+                        "refId": "B"
+                    },
+                    {
+                        "expr": "node_load15{instance=~'$ip:\\\\d+'}/scalar(count(node_cpu_seconds_total{instance=~'$ip:\\\\d+', mode='idle'}))",
+                        "legend": "15分钟",
+                        "refId": "C"
                     }
                 ],
                 "transformations": [
                     {
                         "id": "organize",
-                        "options": {
-                            "renameByName": {
-                                "name": "aid&pid",
-                                "value": "cpu占有率"
-                            }
-                        }
+                        "options": {}
                     }
                 ],
-                "name": "服务负载(CPU使用率)TopN",
-                "links": [],
-                "maxPerRow": 4,
+                "type": "timeseries",
+                "version": "3.0.0"
+            },
+            {
                 "custom": {
-                    "showHeader": true,
-                    "colorMode": "value",
                     "calc": "lastNotNull",
-                    "displayMode": "labelsOfSeriesToRows",
+                    "colorMode": "value",
                     "columns": [
                         "aid",
                         "pid",
                         "value"
                     ],
+                    "displayMode": "labelsOfSeriesToRows",
+                    "linkMode": "appendLinkColumn",
+                    "showHeader": true,
                     "sortColumn": "value",
-                    "sortOrder": "descend",
-                    "linkMode": "appendLinkColumn"
+                    "sortOrder": "descend"
                 },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "id": "098e5363-5563-4581-a723-d5f867025d26",
+                "layout": {
+                    "h": 6,
+                    "i": "098e5363-5563-4581-a723-d5f867025d26",
+                    "isResizable": true,
+                    "w": 12,
+                    "x": 0,
+                    "y": 12
+                },
+                "links": [],
+                "maxPerRow": 4,
+                "name": "服务负载(CPU使用率)TopN",
                 "options": {
                     "standardOptions": {
                         "util": "percentUnit"
@@ -753,57 +692,57 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
-            },
-            {
-                "type": "table",
-                "id": "bc7f986a-84f5-479e-8212-0bed9ef14253",
-                "layout": {
-                    "h": 6,
-                    "w": 12,
-                    "x": 12,
-                    "y": 12,
-                    "i": "bc7f986a-84f5-479e-8212-0bed9ef14253",
-                    "isResizable": true
-                },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                ],
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "sort(topk($topN,avg(xray_proc_mem_resident{instance=~'$ip:\\\\d+'}) by (pid,aid)))",
+                        "expr": "sort(topk($topN,avg(xray_proc_cpu_perc_of_all{instance=~'$ip:\\\\d+'}) by (pid,aid)))",
                         "maxDataPoints": 240,
-                        "legend": "内存占用"
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
                     {
                         "id": "organize",
                         "options": {
-                            "indexByName": {
-                                "mountpoint": 0
+                            "renameByName": {
+                                "name": "aid\u0026pid",
+                                "value": "cpu占有率"
                             }
                         }
                     }
                 ],
-                "name": "服务内存使用率TopN",
-                "links": [],
-                "maxPerRow": 4,
+                "type": "table",
+                "version": "3.0.0"
+            },
+            {
                 "custom": {
-                    "showHeader": true,
-                    "colorMode": "value",
                     "calc": "lastNotNull",
-                    "displayMode": "labelsOfSeriesToRows",
+                    "colorMode": "value",
                     "columns": [
                         "aid",
                         "pid",
                         "value"
                     ],
+                    "displayMode": "labelsOfSeriesToRows",
+                    "linkMode": "appendLinkColumn",
+                    "showHeader": true,
                     "sortColumn": "value",
-                    "sortOrder": "descend",
-                    "linkMode": "appendLinkColumn"
+                    "sortOrder": "descend"
                 },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "id": "bc7f986a-84f5-479e-8212-0bed9ef14253",
+                "layout": {
+                    "h": 6,
+                    "i": "bc7f986a-84f5-479e-8212-0bed9ef14253",
+                    "isResizable": true,
+                    "w": 12,
+                    "x": 12,
+                    "y": 12
+                },
+                "links": [],
+                "maxPerRow": 4,
+                "name": "服务内存使用率TopN",
                 "options": {
                     "standardOptions": {
                         "util": "bytesIEC"
@@ -818,69 +757,55 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
-            },
-            {
-                "type": "table",
-                "id": "0d74006e-7662-4053-8d29-feeaba74787a",
-                "layout": {
-                    "h": 7,
-                    "w": 15,
-                    "x": 0,
-                    "y": 18,
-                    "i": "0d74006e-7662-4053-8d29-feeaba74787a",
-                    "isResizable": true
-                },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
+                ],
                 "targets": [
                     {
-                        "refId": "B",
-                        "expr": "node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"}",
+                        "expr": "sort(topk($topN,avg(xray_proc_mem_resident{instance=~'$ip:\\\\d+'}) by (pid,aid)))",
+                        "legend": "内存占用",
                         "maxDataPoints": 240,
-                        "legend": "总空间"
-                    },
-                    {
-                        "refId": "D",
-                        "expr": "label_replace(node_filesystem_avail_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"},\"__name__\",\"node_filesystem_size_bytes\",\"__name__\",\"(.*)\")",
-                        "maxDataPoints": 240,
-                        "legend": "可用空间"
-                    },
-                    {
-                        "refId": "A",
-                        "expr": "1-(node_filesystem_free_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext.+|xfs\"} / node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"})",
-                        "maxDataPoints": 240,
-                        "legend": "使用率"
-                    },
-                    {
-                        "refId": "C",
-                        "expr": "node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"} / scalar(sum(node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"}))",
-                        "maxDataPoints": 240,
-                        "legend": "分区占比"
+                        "refId": "A"
                     }
                 ],
                 "transformations": [
                     {
                         "id": "organize",
-                        "options": {}
+                        "options": {
+                            "indexByName": {
+                                "mountpoint": 0
+                            }
+                        }
                     }
                 ],
-                "name": "文件系统",
-                "links": [],
-                "maxPerRow": 4,
+                "type": "table",
+                "version": "3.0.0"
+            },
+            {
                 "custom": {
-                    "showHeader": true,
-                    "colorMode": "value",
-                    "calc": "lastNotNull",
-                    "displayMode": "labelValuesToRows",
                     "aggrDimension": [
                         "mountpoint"
                     ],
+                    "calc": "lastNotNull",
+                    "colorMode": "value",
+                    "displayMode": "labelValuesToRows",
+                    "linkMode": "appendLinkColumn",
+                    "showHeader": true,
                     "sortColumn": "mountpoint",
-                    "sortOrder": "ascend",
-                    "linkMode": "appendLinkColumn"
+                    "sortOrder": "ascend"
                 },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "id": "0d74006e-7662-4053-8d29-feeaba74787a",
+                "layout": {
+                    "h": 7,
+                    "i": "0d74006e-7662-4053-8d29-feeaba74787a",
+                    "isResizable": true,
+                    "w": 15,
+                    "x": 0,
+                    "y": 18
+                },
+                "links": [],
+                "maxPerRow": 4,
+                "name": "文件系统",
                 "options": {
                     "standardOptions": {
                         "decimals": 2
@@ -900,118 +825,43 @@
                         }
                     },
                     {
-                        "type": "special",
                         "matcher": {
                             "id": "byFrameRefID",
                             "value": "A"
                         },
                         "properties": {
                             "standardOptions": {
-                                "util": "percentUnit",
-                                "decimals": 2
+                                "decimals": 2,
+                                "util": "percentUnit"
                             }
-                        }
-                    }
-                ]
-            },
-            {
-                "version": "3.0.0",
-                "id": "750a1983-b56d-4714-8854-5fe2fe41b62a",
-                "type": "timeseries",
-                "name": "内存信息",
-                "links": [],
-                "layout": {
-                    "h": 7,
-                    "w": 9,
-                    "x": 15,
-                    "y": 18,
-                    "i": "750a1983-b56d-4714-8854-5fe2fe41b62a",
-                    "isResizable": true
-                },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'}",
-                        "legend": "总内存"
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'} - node_memory_MemAvailable_bytes{instance=~'$ip:\\\\d+'}",
-                        "legend": "已用"
-                    },
-                    {
-                        "refId": "F",
-                        "expr": "node_memory_MemAvailable_bytes{instance=~'$ip:\\\\d+'}",
-                        "legend": "可用"
+                        },
+                        "type": "special"
                     }
                 ],
-                "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
-                    "legend": {
-                        "displayMode": "hidden"
-                    },
-                    "thresholds": {
-                        "steps": [
-                            {
-                                "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
-                            }
-                        ]
-                    }
-                },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
-            },
-            {
-                "type": "timeseries",
-                "id": "4b83e153-39a7-4fbb-b077-926c15e17ce4",
-                "layout": {
-                    "h": 8,
-                    "w": 15,
-                    "x": 0,
-                    "y": 25,
-                    "i": "4b83e153-39a7-4fbb-b077-926c15e17ce4",
-                    "isResizable": true
-                },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
                 "targets": [
                     {
-                        "refId": "A",
-                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"system\"}[1m]))",
-                        "legend": "System",
-                        "maxDataPoints": 240
+                        "expr": "node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"}",
+                        "legend": "总空间",
+                        "maxDataPoints": 240,
+                        "refId": "B"
                     },
                     {
-                        "refId": "B",
-                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"user\"}[1m]))",
-                        "legend": "User",
-                        "maxDataPoints": 240
+                        "expr": "label_replace(node_filesystem_avail_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"},\"__name__\",\"node_filesystem_size_bytes\",\"__name__\",\"(.*)\")",
+                        "legend": "可用空间",
+                        "maxDataPoints": 240,
+                        "refId": "D"
                     },
                     {
-                        "refId": "D",
-                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"iowait\"}[1m]))",
-                        "legend": "Iowait",
-                        "maxDataPoints": 240
+                        "expr": "1-(node_filesystem_free_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext.+|xfs\"} / node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"})",
+                        "legend": "使用率",
+                        "maxDataPoints": 240,
+                        "refId": "A"
                     },
                     {
-                        "refId": "C",
-                        "expr": "irate(node_disk_io_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "{{device}}_每秒I/O操作%",
-                        "maxDataPoints": 240
+                        "expr": "node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"} / scalar(sum(node_filesystem_size_bytes{instance=~'$ip:\\\\d+',fstype=~\"ext4|xfs\"}))",
+                        "legend": "分区占比",
+                        "maxDataPoints": 240,
+                        "refId": "C"
                     }
                 ],
                 "transformations": [
@@ -1020,48 +870,123 @@
                         "options": {}
                     }
                 ],
-                "name": "CPU使用率、磁盘每秒的I/O操作耗费时间（%）",
+                "type": "table",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "id": "750a1983-b56d-4714-8854-5fe2fe41b62a",
+                "layout": {
+                    "h": 7,
+                    "i": "750a1983-b56d-4714-8854-5fe2fe41b62a",
+                    "isResizable": true,
+                    "w": 9,
+                    "x": 15,
+                    "y": 18
+                },
                 "links": [],
-                "description": "node_disk_io_time_seconds_total：\n磁盘花费在输入/输出操作上的毫秒数。该值为累加值。（Milliseconds Spent Doing I/Os）\n\nirate(node_disk_io_time_seconds_total[1m])：\n计算每秒的速率：(last值-last前一个值)/时间戳差值，即：1秒钟内磁盘花费在I/O操作的时间占比。",
-                "maxPerRow": 6,
+                "maxPerRow": 4,
+                "name": "内存信息",
                 "options": {
+                    "legend": {
+                        "displayMode": "hidden"
+                    },
+                    "thresholds": {
+                        "steps": [
+                            {
+                                "color": "#634CD9",
+                                "type": "base",
+                                "value": null
+                            }
+                        ]
+                    },
                     "tooltip": {
                         "mode": "all",
                         "sort": "none"
+                    }
+                },
+                "targets": [
+                    {
+                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'}",
+                        "legend": "总内存",
+                        "refId": "A"
                     },
+                    {
+                        "expr": "node_memory_MemTotal_bytes{instance=~'$ip:\\\\d+'} - node_memory_MemAvailable_bytes{instance=~'$ip:\\\\d+'}",
+                        "legend": "已用",
+                        "refId": "B"
+                    },
+                    {
+                        "expr": "node_memory_MemAvailable_bytes{instance=~'$ip:\\\\d+'}",
+                        "legend": "可用",
+                        "refId": "F"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
+            },
+            {
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "node_disk_io_time_seconds_total：\n磁盘花费在输入/输出操作上的毫秒数。该值为累加值。（Milliseconds Spent Doing I/Os）\n\nirate(node_disk_io_time_seconds_total[1m])：\n计算每秒的速率：(last值-last前一个值)/时间戳差值，即：1秒钟内磁盘花费在I/O操作的时间占比。",
+                "id": "4b83e153-39a7-4fbb-b077-926c15e17ce4",
+                "layout": {
+                    "h": 8,
+                    "i": "4b83e153-39a7-4fbb-b077-926c15e17ce4",
+                    "isResizable": true,
+                    "w": 15,
+                    "x": 0,
+                    "y": 25
+                },
+                "links": [],
+                "maxPerRow": 6,
+                "name": "CPU使用率、磁盘每秒的I/O操作耗费时间（%）",
+                "options": {
                     "legend": {
-                        "displayMode": "table",
+                        "behaviour": "showItem",
                         "columns": [
                             "avg",
                             "max",
                             "last"
                         ],
-                        "behaviour": "showItem"
+                        "displayMode": "table"
                     },
                     "standardOptions": {
-                        "util": "percentUnit",
-                        "decimals": 2
+                        "decimals": 2,
+                        "util": "percentUnit"
                     },
                     "thresholds": {
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 1,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
                 "overrides": [
@@ -1073,54 +998,74 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"system\"}[1m]))",
+                        "legend": "System",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"user\"}[1m]))",
+                        "legend": "User",
+                        "maxDataPoints": 240,
+                        "refId": "B"
+                    },
+                    {
+                        "expr": "avg(irate(node_cpu_seconds_total{instance=~'$ip:\\\\d+',mode=\"iowait\"}[1m]))",
+                        "legend": "Iowait",
+                        "maxDataPoints": 240,
+                        "refId": "D"
+                    },
+                    {
+                        "expr": "irate(node_disk_io_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "{{device}}_每秒I/O操作%",
+                        "maxDataPoints": 240,
+                        "refId": "C"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "type": "timeseries",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
+                "description": "",
                 "id": "3a577a42-dec3-4861-bba0-eaced172a318",
                 "layout": {
                     "h": 8,
+                    "i": "3a577a42-dec3-4861-bba0-eaced172a318",
+                    "isResizable": true,
                     "w": 9,
                     "x": 15,
-                    "y": 25,
-                    "i": "3a577a42-dec3-4861-bba0-eaced172a318",
-                    "isResizable": true
+                    "y": 25
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "irate(node_disk_read_bytes_total{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "{{device}}_读取",
-                        "maxDataPoints": 240
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "irate(node_disk_written_bytes_total{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "{{device}}_写入",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "磁盘吞吐量",
                 "links": [],
-                "description": "",
                 "maxPerRow": 4,
+                "name": "磁盘吞吐量",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
-                        "displayMode": "hidden",
-                        "behaviour": "showItem"
+                        "behaviour": "showItem",
+                        "displayMode": "hidden"
                     },
                     "standardOptions": {
                         "util": "bytesSecIEC"
@@ -1129,22 +1074,14 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 1,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
                 "overrides": [
@@ -1156,40 +1093,54 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "irate(node_disk_read_bytes_total{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "{{device}}_读取",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "irate(node_disk_written_bytes_total{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "{{device}}_写入",
+                        "maxDataPoints": 240,
+                        "refId": "B"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
-                "id": "46d9e9b7-c571-49d4-8285-d658c97bacf4",
-                "type": "timeseries",
-                "name": "磁盘IOPS",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "description": "",
-                "links": [],
+                "id": "46d9e9b7-c571-49d4-8285-d658c97bacf4",
                 "layout": {
                     "h": 7,
+                    "i": "46d9e9b7-c571-49d4-8285-d658c97bacf4",
+                    "isResizable": true,
                     "w": 8,
                     "x": 0,
-                    "y": 33,
-                    "i": "46d9e9b7-c571-49d4-8285-d658c97bacf4",
-                    "isResizable": true
+                    "y": 33
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "irate(node_disk_reads_completed_total{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "{{device}}_读取"
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "irate(node_disk_writes_completed_total{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "{{device}}_写入"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "磁盘IOPS",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -1197,50 +1148,55 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "irate(node_disk_reads_completed_total{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "{{device}}_读取",
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "irate(node_disk_writes_completed_total{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "{{device}}_写入",
+                        "refId": "B"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
-                "id": "46e0ac5a-c7eb-4476-9021-e5fea67fab2e",
-                "type": "timeseries",
-                "name": "磁盘IO队列长度",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "description": "",
-                "links": [],
+                "id": "46e0ac5a-c7eb-4476-9021-e5fea67fab2e",
                 "layout": {
                     "h": 7,
+                    "i": "46e0ac5a-c7eb-4476-9021-e5fea67fab2e",
+                    "isResizable": true,
                     "w": 8,
                     "x": 8,
-                    "y": 33,
-                    "i": "46e0ac5a-c7eb-4476-9021-e5fea67fab2e",
-                    "isResizable": true
+                    "y": 33
                 },
-                "targets": [
-                    {
-                        "refId": "B",
-                        "expr": "node_disk_io_now{instance=~'$ip:\\\\d+'}",
-                        "legend": "{{device}}"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "磁盘IO队列长度",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -1248,55 +1204,50 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "node_disk_io_now{instance=~'$ip:\\\\d+'}",
+                        "legend": "{{device}}",
+                        "refId": "B"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
-                "id": "fcf43add-1184-4fc7-ba8e-9c9613787a0f",
-                "type": "timeseries",
-                "name": "磁盘读写时间",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "description": "Read time ms 每个磁盘分区读操作花费的秒数\n\nWrite time ms 每个磁盘分区写操作花费的秒数\n\nIO time ms 每个磁盘分区输入/输出操作花费的秒数\n\nIO time weighted 每个磁盘分区输入/输出操作花费的加权秒数",
-                "links": [],
+                "id": "fcf43add-1184-4fc7-ba8e-9c9613787a0f",
                 "layout": {
                     "h": 7,
+                    "i": "fcf43add-1184-4fc7-ba8e-9c9613787a0f",
+                    "isResizable": true,
                     "w": 8,
                     "x": 16,
-                    "y": 33,
-                    "i": "fcf43add-1184-4fc7-ba8e-9c9613787a0f",
-                    "isResizable": true
+                    "y": 33
                 },
-                "targets": [
-                    {
-                        "refId": "B",
-                        "expr": "increase(node_disk_read_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])/clamp_min(increase(node_disk_reads_completed_total{instance=~'$ip:\\\\d+'}[1m]),1)*(-1)",
-                        "legend": "{{device}}_读取"
-                    },
-                    {
-                        "refId": "C",
-                        "expr": "increase(node_disk_write_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])/clamp_min(increase(node_disk_writes_completed_total{instance=~'$ip:\\\\d+'}[1m]),1)",
-                        "legend": "{{device}}_写入"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "磁盘读写时间",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -1304,68 +1255,62 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "increase(node_disk_read_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])/clamp_min(increase(node_disk_reads_completed_total{instance=~'$ip:\\\\d+'}[1m]),1)*(-1)",
+                        "legend": "{{device}}_读取",
+                        "refId": "B"
+                    },
+                    {
+                        "expr": "increase(node_disk_write_time_seconds_total{instance=~'$ip:\\\\d+'}[1m])/clamp_min(increase(node_disk_writes_completed_total{instance=~'$ip:\\\\d+'}[1m]),1)",
+                        "legend": "{{device}}_写入",
+                        "refId": "C"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "type": "timeseries",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                        "type": "linear"
+                    },
+                    "spanNulls": false,
+                    "stack": "off"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "dc298808-7044-4861-9a08-ab96bcb33e45",
                 "layout": {
                     "h": 8,
+                    "i": "dc298808-7044-4861-9a08-ab96bcb33e45",
+                    "isResizable": true,
                     "w": 12,
                     "x": 0,
-                    "y": 40,
-                    "i": "dc298808-7044-4861-9a08-ab96bcb33e45",
-                    "isResizable": true
+                    "y": 40
                 },
-                "version": "3.0.0",
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}",
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "irate(node_network_receive_bytes_total{instance=~'$ip:\\\\d+',device!~'tap.*|veth.*|lo.*'}[5m])",
-                        "legend": "{{device}}_上传",
-                        "maxDataPoints": 240
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "irate(node_network_transmit_bytes_total{instance=~'$ip:\\\\d+',device!~'tap.*|veth.*|lo.*'}[5m])*(-1)",
-                        "legend": "{{device}}_下载",
-                        "maxDataPoints": 240
-                    }
-                ],
-                "transformations": [
-                    {
-                        "id": "organize",
-                        "options": {}
-                    }
-                ],
-                "name": "网络流量",
                 "links": [],
                 "maxPerRow": 4,
+                "name": "网络流量",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
-                        "displayMode": "hidden",
-                        "behaviour": "showItem"
+                        "behaviour": "showItem",
+                        "displayMode": "hidden"
                     },
                     "standardOptions": {
                         "util": "bytesSecIEC"
@@ -1374,22 +1319,14 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
-                    }
-                },
-                "custom": {
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "spanNulls": false,
-                    "lineWidth": 1,
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "stack": "off",
-                    "scaleDistribution": {
-                        "type": "linear"
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
                 "overrides": [
@@ -1401,60 +1338,54 @@
                             "rightYAxisDisplay": "off"
                         }
                     }
-                ]
+                ],
+                "targets": [
+                    {
+                        "expr": "irate(node_network_receive_bytes_total{instance=~'$ip:\\\\d+',device!~'tap.*|veth.*|lo.*'}[5m])",
+                        "legend": "{{device}}_上传",
+                        "maxDataPoints": 240,
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "irate(node_network_transmit_bytes_total{instance=~'$ip:\\\\d+',device!~'tap.*|veth.*|lo.*'}[5m])*(-1)",
+                        "legend": "{{device}}_下载",
+                        "maxDataPoints": 240,
+                        "refId": "B"
+                    }
+                ],
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {}
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
-                "id": "9ced5723-9c1a-405f-95c4-56b9734d4cd0",
-                "type": "timeseries",
-                "name": "TCP 连接情况",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "description": "CurrEstab - 当前状态为 ESTABLISHED 或 CLOSE-WAIT 的 TCP 连接数\n\nActiveOpens - 已从 CLOSED 状态直接转换到 SYN-SENT 状态的 TCP 平均连接数(1分钟内)\n\nPassiveOpens - 已从 LISTEN 状态直接转换到 SYN-RCVD 状态的 TCP 平均连接数(1分钟内)\n\nTCP_alloc - 已分配（已建立、已申请到sk_buff）的TCP套接字数量\n\nTCP_inuse - 正在使用（正在侦听）的TCP套接字数量\n\nTCP_tw - 等待关闭的TCP连接数",
-                "links": [],
+                "id": "9ced5723-9c1a-405f-95c4-56b9734d4cd0",
                 "layout": {
                     "h": 8,
+                    "i": "9ced5723-9c1a-405f-95c4-56b9734d4cd0",
+                    "isResizable": true,
                     "w": 12,
                     "x": 12,
-                    "y": 40,
-                    "i": "9ced5723-9c1a-405f-95c4-56b9734d4cd0",
-                    "isResizable": true
+                    "y": 40
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "node_netstat_Tcp_CurrEstab{instance=~'$ip:\\\\d+'}",
-                        "legend": "TCP_ESTABLISHED"
-                    },
-                    {
-                        "refId": "D",
-                        "expr": "node_sockstat_TCP_tw{instance=~'$ip:\\\\d+'}",
-                        "legend": "TCP_TIME_WAIT"
-                    },
-                    {
-                        "refId": "B",
-                        "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "ActiveOpens"
-                    },
-                    {
-                        "refId": "C",
-                        "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~'$ip:\\\\d+'}[1m])",
-                        "legend": "PassiveOpens"
-                    },
-                    {
-                        "refId": "E",
-                        "expr": "node_sockstat_TCP_alloc{instance=~'$ip:\\\\d+'}",
-                        "legend": "TCP_alloc"
-                    },
-                    {
-                        "refId": "F",
-                        "expr": "node_sockstat_TCP_inuse{instance=~'$ip:\\\\d+'}",
-                        "legend": "TCP_inuse"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "TCP 连接情况",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -1462,49 +1393,74 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "node_netstat_Tcp_CurrEstab{instance=~'$ip:\\\\d+'}",
+                        "legend": "TCP_ESTABLISHED",
+                        "refId": "A"
+                    },
+                    {
+                        "expr": "node_sockstat_TCP_tw{instance=~'$ip:\\\\d+'}",
+                        "legend": "TCP_TIME_WAIT",
+                        "refId": "D"
+                    },
+                    {
+                        "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "ActiveOpens",
+                        "refId": "B"
+                    },
+                    {
+                        "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~'$ip:\\\\d+'}[1m])",
+                        "legend": "PassiveOpens",
+                        "refId": "C"
+                    },
+                    {
+                        "expr": "node_sockstat_TCP_alloc{instance=~'$ip:\\\\d+'}",
+                        "legend": "TCP_alloc",
+                        "refId": "E"
+                    },
+                    {
+                        "expr": "node_sockstat_TCP_inuse{instance=~'$ip:\\\\d+'}",
+                        "legend": "TCP_inuse",
+                        "refId": "F"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             },
             {
-                "version": "3.0.0",
+                "custom": {
+                    "drawStyle": "lines",
+                    "fillOpacity": 0,
+                    "lineInterpolation": "linear",
+                    "stack": "off",
+                    "version": "3.0.0"
+                },
+                "datasourceCate": "prometheus",
+                "datasourceValue": "${datasource}",
                 "id": "46f8cac0-2f29-427e-9550-dd6f449cd239",
-                "type": "timeseries",
-                "name": "CPU温度",
-                "links": [],
                 "layout": {
                     "h": 8,
+                    "i": "46f8cac0-2f29-427e-9550-dd6f449cd239",
+                    "isResizable": true,
                     "w": 24,
                     "x": 0,
-                    "y": 48,
-                    "i": "46f8cac0-2f29-427e-9550-dd6f449cd239",
-                    "isResizable": true
+                    "y": 48
                 },
-                "targets": [
-                    {
-                        "refId": "A",
-                        "expr": "node_hwmon_temp_celsius{instance=~'$ip:\\\\d+'}",
-                        "legend": "{{chip}} {{sensor}}"
-                    }
-                ],
+                "links": [],
+                "maxPerRow": 4,
+                "name": "CPU温度",
                 "options": {
-                    "tooltip": {
-                        "mode": "all",
-                        "sort": "none"
-                    },
                     "legend": {
                         "displayMode": "hidden"
                     },
@@ -1512,23 +1468,79 @@
                         "steps": [
                             {
                                 "color": "#634CD9",
-                                "value": null,
-                                "type": "base"
+                                "type": "base",
+                                "value": null
                             }
                         ]
+                    },
+                    "tooltip": {
+                        "mode": "all",
+                        "sort": "none"
                     }
                 },
-                "custom": {
-                    "version": "3.0.0",
-                    "drawStyle": "lines",
-                    "lineInterpolation": "linear",
-                    "fillOpacity": 0,
-                    "stack": "off"
-                },
-                "maxPerRow": 4,
-                "datasourceCate": "prometheus",
-                "datasourceValue": "${datasource}"
+                "targets": [
+                    {
+                        "expr": "node_hwmon_temp_celsius{instance=~'$ip:\\\\d+'}",
+                        "legend": "{{chip}} {{sensor}}",
+                        "refId": "A"
+                    }
+                ],
+                "type": "timeseries",
+                "version": "3.0.0"
             }
-        ]
-    }
+        ],
+        "var": [
+            {
+                "defaultValue": 3,
+                "definition": "prometheus",
+                "name": "datasource",
+                "regex": "/.*skynet.*/",
+                "type": "datasource"
+            },
+            {
+                "allOption": false,
+                "allValue": null,
+                "datasource": {
+                    "cate": "prometheus",
+                    "value": "${datasource}"
+                },
+                "definition": "query_result(topk(1,sort_desc (max(node_filesystem_size_bytes{_ip='$ip',fstype=~\"ext4|xfs\"}) by (mountpoint))))",
+                "hide": true,
+                "multi": false,
+                "name": "maxmount",
+                "reg": "/.*\\\"(.*)\\\".*/",
+                "type": "query"
+            },
+            {
+                "allOption": false,
+                "allValue": null,
+                "datasource": {
+                    "cate": "prometheus",
+                    "value": "${datasource}"
+                },
+                "definition": "label_values(up{job='node-exporter@ant-mon'},instance)",
+                "hide": false,
+                "multi": false,
+                "name": "ip",
+                "reg": "(.+):(\\d+)",
+                "type": "query"
+            },
+            {
+                "allOption": false,
+                "allValue": null,
+                "definition": "5,6,7,8,9,10,15,20,30,50",
+                "hide": false,
+                "multi": false,
+                "name": "topN",
+                "type": "custom"
+            }
+        ],
+        "version": "3.0.0"
+    },
+    "public": 0,
+    "public_cate": 0,
+    "bgids": null,
+    "built_in": 0,
+    "hide": 0,
+    "uuid": 1737621553037796
 }
