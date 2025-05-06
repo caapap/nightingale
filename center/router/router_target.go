@@ -10,13 +10,13 @@ import (
 
 	"github.com/ccfos/nightingale/v6/models"
 	"github.com/ccfos/nightingale/v6/pkg/ctx"
+	"github.com/ccfos/nightingale/v6/pkg/strx"
 	"github.com/ccfos/nightingale/v6/storage"
 
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/common/model"
 	"github.com/toolkits/pkg/ginx"
 	"github.com/toolkits/pkg/logger"
-	"github.com/toolkits/pkg/str"
 )
 
 type TargetQuery struct {
@@ -44,7 +44,7 @@ func (rt *Router) targetGetsByHostFilter(c *gin.Context) {
 }
 
 func (rt *Router) targetGets(c *gin.Context) {
-	bgids := str.IdsInt64(ginx.QueryStr(c, "gids", ""), ",")
+	bgids := strx.IdsInt64ForAPI(ginx.QueryStr(c, "gids", ""), ",")
 	query := ginx.QueryStr(c, "query", "")
 	limit := ginx.QueryInt(c, "limit", 30)
 	downtime := ginx.QueryInt64(c, "downtime", 0)
@@ -56,7 +56,11 @@ func (rt *Router) targetGets(c *gin.Context) {
 	hosts := queryStrListField(c, "hosts", ",", " ", "\n")
 
 	var err error
-	if len(bgids) == 0 {
+	if len(bgids) > 0 {
+		for _, gid := range bgids {
+			rt.bgroCheck(c, gid)
+		}
+	} else {
 		user := c.MustGet("user").(*models.User)
 		if !user.IsAdmin() {
 			// 如果是非 admin 用户，全部对象的情况，找到用户有权限的业务组
@@ -569,4 +573,28 @@ func (rt *Router) targetsOfAlertRule(c *gin.Context) {
 	}
 
 	ginx.NewRender(c).Data(ret, err)
+}
+
+func (rt *Router) checkTargetsExistByIndent(idents []string) {
+	existingIdents, err := models.TargetNoExistIdents(rt.Ctx, idents)
+	ginx.Dangerous(err)
+
+	if len(existingIdents) > 0 {
+		ginx.Bomb(http.StatusBadRequest, "targets not exist: %s", strings.Join(existingIdents, ","))
+	}
+}
+
+func (rt *Router) targetsOfHostQuery(c *gin.Context) {
+	var queries []models.HostQuery
+	ginx.BindJSON(c, &queries)
+
+	hostsQuery := models.GetHostsQuery(queries)
+	session := models.TargetFilterQueryBuild(rt.Ctx, hostsQuery, 0, 0)
+	var lst []*models.Target
+	err := session.Find(&lst).Error
+	if err != nil {
+		ginx.Bomb(http.StatusInternalServerError, err.Error())
+	}
+
+	ginx.NewRender(c).Data(lst, nil)
 }

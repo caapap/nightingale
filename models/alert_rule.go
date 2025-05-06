@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"text/template"
+	"text/template/parse"
 	"time"
 
 	"github.com/ccfos/nightingale/v6/pkg/ctx"
@@ -45,6 +47,13 @@ const (
 	AlertRuleNotifyRepeatStep60Min = 60
 
 	AlertRuleRecoverDuration0Sec = 0
+)
+
+const (
+	SeverityEmergency = 1
+	SeverityWarning   = 2
+	SeverityNotice    = 3
+	SeverityLowest    = 4
 )
 
 type AlertRule struct {
@@ -107,6 +116,8 @@ type AlertRule struct {
 	CurEventCount         int64                  `json:"cur_event_count" gorm:"-"`
 	UpdateByNickname      string                 `json:"update_by_nickname" gorm:"-"` // for fe
 	CronPattern           string                 `json:"cron_pattern"`
+	NotifyRuleIds         []int64                `json:"notify_rule_ids" gorm:"serializer:json"`
+	NotifyVersion         int                    `json:"notify_version"` // 0: old, 1: new
 }
 
 type ChildVarConfig struct {
@@ -463,12 +474,22 @@ func (ar *AlertRule) Verify() error {
 	//	ar.DatasourceIdsJson = []int64{0}
 	//}
 
-	if str.Dangerous(ar.Name) {
+	ar.Name = strings.TrimSpace(ar.Name)
+	if ar.Name == "" {
+		return errors.New("name is blank")
+	}
+
+	t, err := template.New("test").Parse(ar.Name)
+	if err != nil {
 		return errors.New("Name has invalid characters")
 	}
 
-	if ar.Name == "" {
-		return errors.New("name is blank")
+	for _, node := range t.Tree.Root.Nodes {
+		if tn := node.(*parse.TextNode); tn != nil {
+			if str.Dangerous(tn.String()) {
+				return fmt.Errorf("Name has invalid characters: %s", tn.String())
+			}
+		}
 	}
 
 	if ar.Prod == "" {
@@ -509,6 +530,14 @@ func (ar *AlertRule) Verify() error {
 
 	if err := ar.validateCronPattern(); err != nil {
 		return err
+	}
+
+	if len(ar.NotifyRuleIds) > 0 {
+		ar.NotifyVersion = 1
+		ar.NotifyChannelsJSON = []string{}
+		ar.NotifyGroupsJSON = []string{}
+		ar.NotifyChannels = ""
+		ar.NotifyGroups = ""
 	}
 
 	return nil
@@ -694,6 +723,16 @@ func (ar *AlertRule) UpdateColumn(ctx *ctx.Context, column string, value interfa
 			return err
 		}
 		return DB(ctx).Model(ar).UpdateColumn("annotations", string(b)).Error
+	}
+
+	if column == "notify_rule_ids" {
+		updates := map[string]interface{}{
+			"notify_version":  1,
+			"notify_channels": "",
+			"notify_groups":   "",
+			"notify_rule_ids": value,
+		}
+		return DB(ctx).Model(ar).Updates(updates).Error
 	}
 
 	return DB(ctx).Model(ar).UpdateColumn(column, value).Error
@@ -898,6 +937,10 @@ func (ar *AlertRule) DB2FE() error {
 	}
 	if len(ar.EnableDaysOfWeeksJSON) > 0 {
 		ar.EnableDaysOfWeekJSON = ar.EnableDaysOfWeeksJSON[0]
+	}
+
+	if ar.NotifyRuleIds == nil {
+		ar.NotifyRuleIds = make([]int64, 0)
 	}
 
 	ar.NotifyChannelsJSON = strings.Fields(ar.NotifyChannels)
@@ -1340,4 +1383,19 @@ func InsertAlertRule(ctx *ctx.Context, ars []*AlertRule) error {
 
 func (ar *AlertRule) Hash() string {
 	return str.MD5(fmt.Sprintf("%d_%s_%s", ar.Id, ar.DatasourceIds, ar.RuleConfig))
+}
+
+// 复制告警策略，需要提供操作者名称和新的业务组ID
+func (ar *AlertRule) Clone(operatorName string, newBgid int64) *AlertRule {
+	newAr := ar
+
+	newAr.Id = 0
+	newAr.GroupId = newBgid
+	newAr.Name = ar.Name
+	newAr.UpdateBy = operatorName
+	newAr.UpdateAt = time.Now().Unix()
+	newAr.CreateBy = operatorName
+	newAr.CreateAt = time.Now().Unix()
+
+	return newAr
 }

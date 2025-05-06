@@ -22,16 +22,23 @@ import (
 )
 
 const (
-	Dingtalk     = "dingtalk"
-	Wecom        = "wecom"
-	Feishu       = "feishu"
-	FeishuCard   = "feishucard"
-	Mm           = "mm"
-	Telegram     = "telegram"
-	Email        = "email"
-	EmailSubject = "mailsubject"
-	Lark         = "lark"
-	LarkCard     = "larkcard"
+	Dingtalk          = "dingtalk"
+	Wecom             = "wecom"
+	Feishu            = "feishu"
+	FeishuCard        = "feishucard"
+	FeishuApp         = "feishuapp"
+	Discord           = "discord"
+	MattermostWebhook = "mattermostwebhook"
+	MattermostBot     = "mattermostbot"
+	SlackWebhook      = "slackwebhook"
+	SlackBot          = "slackbot"
+	Mm                = "mm"
+	Telegram          = "telegram"
+	Email             = "email"
+	EmailSubject      = "mailsubject"
+	Lark              = "lark"
+	LarkCard          = "larkcard"
+	Phone             = "phone"
 
 	DingtalkKey = "dingtalk_robot_token"
 	WecomKey    = "wecom_robot_token"
@@ -524,7 +531,7 @@ func UserTotal(ctx *ctx.Context, query string, stime, etime int64) (num int64, e
 }
 
 func UserGets(ctx *ctx.Context, query string, limit, offset int, stime, etime int64,
-	order string, desc bool) ([]User, error) {
+	order string, desc bool, usernames, phones, emails []string) ([]User, error) {
 
 	session := DB(ctx)
 
@@ -539,6 +546,18 @@ func UserGets(ctx *ctx.Context, query string, limit, offset int, stime, etime in
 	}
 
 	session = session.Order(order)
+
+	if len(usernames) > 0 {
+		session = session.Where("username in (?)", usernames)
+	}
+
+	if len(phones) > 0 {
+		session = session.Where("phone in (?)", phones)
+	}
+
+	if len(emails) > 0 {
+		session = session.Where("email in (?)", emails)
+	}
 
 	if query != "" {
 		q := "%" + query + "%"
@@ -898,8 +917,11 @@ func (u *User) ExtractToken(key string) (string, bool) {
 	case Lark, LarkCard:
 		ret := gjson.GetBytes(bs, LarkKey)
 		return ret.String(), ret.Exists()
+	case Phone:
+		return u.Phone, u.Phone != ""
 	default:
-		return "", false
+		ret := gjson.GetBytes(bs, key)
+		return ret.String(), ret.Exists()
 	}
 }
 

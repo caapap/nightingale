@@ -39,7 +39,7 @@ func NewRecordRuleContext(rule *models.RecordingRule, datasourceId int64, promCl
 		rule.CronPattern = fmt.Sprintf("@every %ds", rule.PromEvalInterval)
 	}
 
-	rrc.scheduler = cron.New(cron.WithSeconds())
+	rrc.scheduler = cron.New(cron.WithSeconds(), cron.WithChain(cron.SkipIfStillRunning(cron.DefaultLogger)))
 	_, err := rrc.scheduler.AddFunc(rule.CronPattern, func() {
 		rrc.Eval()
 	})
@@ -56,12 +56,13 @@ func (rrc *RecordRuleContext) Key() string {
 }
 
 func (rrc *RecordRuleContext) Hash() string {
-	return str.MD5(fmt.Sprintf("%d_%s_%s_%d_%s",
+	return str.MD5(fmt.Sprintf("%d_%s_%s_%d_%s_%s",
 		rrc.rule.Id,
 		rrc.rule.CronPattern,
 		rrc.rule.PromQl,
 		rrc.datasourceId,
 		rrc.rule.AppendTags,
+		rrc.rule.Name,
 	))
 }
 

@@ -49,6 +49,8 @@ type AlertSubscribe struct {
 	BusiGroups        ormx.JSONArr `json:"busi_groups"`
 	IBusiGroups       []TagFilter  `json:"-" gorm:"-"` // inner busiGroups
 	RuleIds           []int64      `json:"rule_ids" gorm:"serializer:json"`
+	NotifyRuleIds     []int64      `json:"notify_rule_ids" gorm:"serializer:json"`
+	NotifyVersion     int          `json:"notify_version"`
 	RuleNames         []string     `json:"rule_names" gorm:"-"`
 }
 
@@ -403,6 +405,12 @@ func (s *AlertSubscribe) ModifyEvent(event *AlertCurEvent) {
 		// 将 callback 重置为空，防止事件被订阅之后，再次将事件发送给回调地址
 		event.Callbacks = ""
 		event.CallbacksJSON = []string{}
+	}
+
+	if len(s.NotifyRuleIds) > 0 {
+		event.NotifyRuleIDs = s.NotifyRuleIds
+	} else {
+		event.NotifyRuleIDs = []int64{}
 	}
 
 	event.NotifyGroups = s.UserGroupIds

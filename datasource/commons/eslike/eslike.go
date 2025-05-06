@@ -10,6 +10,7 @@ import (
 
 	"github.com/araddon/dateparse"
 	"github.com/bitly/go-simplejson"
+	"github.com/ccfos/nightingale/v6/memsto"
 	"github.com/ccfos/nightingale/v6/models"
 	"github.com/mitchellh/mapstructure"
 	"github.com/olivere/elastic/v7"
@@ -18,18 +19,21 @@ import (
 )
 
 type Query struct {
-	Ref        string     `json:"ref" mapstructure:"ref"`
-	Index      string     `json:"index" mapstructure:"index"`
-	Filter     string     `json:"filter" mapstructure:"filter"`
-	MetricAggr MetricAggr `json:"value" mapstructure:"value"`
-	GroupBy    []GroupBy  `json:"group_by" mapstructure:"group_by"`
-	DateField  string     `json:"date_field" mapstructure:"date_field"`
-	Interval   int64      `json:"interval" mapstructure:"interval"`
-	Start      int64      `json:"start" mapstructure:"start"`
-	End        int64      `json:"end" mapstructure:"end"`
-	P          int        `json:"page" mapstructure:"page"`           // 页码
-	Limit      int        `json:"limit" mapstructure:"limit"`         // 每页个数
-	Ascending  bool       `json:"ascending" mapstructure:"ascending"` // 按照DataField排序
+	Ref            string     `json:"ref" mapstructure:"ref"`
+	IndexType      string     `json:"index_type" mapstructure:"index_type"` // 普通索引:index 索引模式:index_pattern
+	Index          string     `json:"index" mapstructure:"index"`
+	IndexPatternId int64      `json:"index_pattern" mapstructure:"index_pattern"`
+	Filter         string     `json:"filter" mapstructure:"filter"`
+	Offset         int64      `json:"offset" mapstructure:"offset"`
+	MetricAggr     MetricAggr `json:"value" mapstructure:"value"`
+	GroupBy        []GroupBy  `json:"group_by" mapstructure:"group_by"`
+	DateField      string     `json:"date_field" mapstructure:"date_field"`
+	Interval       int64      `json:"interval" mapstructure:"interval"`
+	Start          int64      `json:"start" mapstructure:"start"`
+	End            int64      `json:"end" mapstructure:"end"`
+	P              int        `json:"page" mapstructure:"page"`           // 页码
+	Limit          int        `json:"limit" mapstructure:"limit"`         // 每页个数
+	Ascending      bool       `json:"ascending" mapstructure:"ascending"` // 按照DataField排序
 
 	Timeout  int `json:"timeout" mapstructure:"timeout"`
 	MaxShard int `json:"max_shard" mapstructure:"max_shard"`
@@ -307,6 +311,16 @@ func MakeTSQuery(ctx context.Context, query interface{}, eventTags []string, sta
 	return param, nil
 }
 
+var esIndexPatternCache *memsto.EsIndexPatternCacheType
+
+func SetEsIndexPatternCacheType(c *memsto.EsIndexPatternCacheType) {
+	esIndexPatternCache = c
+}
+
+func GetEsIndexPatternCacheType() *memsto.EsIndexPatternCacheType {
+	return esIndexPatternCache
+}
+
 func QueryData(ctx context.Context, queryParam interface{}, cliTimeout int64, version string, search SearchFunc) ([]models.DataResp, error) {
 	param := new(Query)
 	if err := mapstructure.Decode(queryParam, param); err != nil {
@@ -329,7 +343,19 @@ func QueryData(ctx context.Context, queryParam interface{}, cliTimeout int64, ve
 		param.DateField = "@timestamp"
 	}
 
-	indexArr := strings.Split(param.Index, ",")
+	var indexArr []string
+	if param.IndexType == "index_pattern" {
+		if ip, ok := GetEsIndexPatternCacheType().Get(param.IndexPatternId); ok {
+			param.DateField = ip.TimeField
+			indexArr = []string{ip.Name}
+			param.Index = ip.Name
+		} else {
+			return nil, fmt.Errorf("index pattern:%d not found", param.IndexPatternId)
+		}
+	} else {
+		indexArr = strings.Split(param.Index, ",")
+	}
+
 	q := elastic.NewRangeQuery(param.DateField)
 	now := time.Now().Unix()
 	var start, end int64
@@ -345,6 +371,11 @@ func QueryData(ctx context.Context, queryParam interface{}, cliTimeout int64, ve
 	if ok && delay != 0 {
 		end = end - delay
 		start = start - delay
+	}
+
+	if param.Offset > 0 {
+		end = end - param.Offset
+		start = start - param.Offset
 	}
 
 	q.Gte(time.Unix(start, 0).UnixMilli())
@@ -458,7 +489,7 @@ func QueryData(ctx context.Context, queryParam interface{}, cliTimeout int64, ve
 
 	source, _ := queryString.Source()
 	b, _ := json.Marshal(source)
-	logger.Debugf("query_data q:%+v tsAggr:%+v query_string:%s", param, tsAggr, string(b))
+	logger.Debugf("query_data q:%+v indexArr:%+v tsAggr:%+v query_string:%s", param, indexArr, tsAggr, string(b))
 
 	searchSource := elastic.NewSearchSource().
 		Query(queryString).
@@ -505,7 +536,16 @@ func QueryData(ctx context.Context, queryParam interface{}, cliTimeout int64, ve
 
 	GetBuckts("", keys, bucketsData, metrics, "", 0, param.MetricAggr.Func)
 
-	return TransferData(fmt.Sprintf("%s_%s", field, param.MetricAggr.Func), param.Ref, metrics.Data), nil
+	items, err := TransferData(fmt.Sprintf("%s_%s", field, param.MetricAggr.Func), param.Ref, metrics.Data), nil
+
+	var m map[string]interface{}
+	bs, _ := json.Marshal(queryParam)
+	json.Unmarshal(bs, &m)
+	m["index"] = param.Index
+	for i := range items {
+		items[i].Query = fmt.Sprintf("%+v", m)
+	}
+	return items, nil
 }
 
 func HitFilter(typ string) bool {
@@ -527,7 +567,17 @@ func QueryLog(ctx context.Context, queryParam interface{}, timeout int64, versio
 		param.Timeout = int(timeout)
 	}
 
-	indexArr := strings.Split(param.Index, ",")
+	var indexArr []string
+	if param.IndexType == "index_pattern" {
+		if ip, ok := GetEsIndexPatternCacheType().Get(param.IndexPatternId); ok {
+			param.DateField = ip.TimeField
+			indexArr = []string{ip.Name}
+		} else {
+			return nil, 0, fmt.Errorf("index pattern:%d not found", param.IndexPatternId)
+		}
+	} else {
+		indexArr = strings.Split(param.Index, ",")
+	}
 
 	now := time.Now().Unix()
 	var start, end int64
