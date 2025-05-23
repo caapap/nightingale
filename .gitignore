@@ -68,8 +68,8 @@ n9e.sql
 
 !/datasource
 
-<<<<<<< HEAD
-.cursorrules
-=======
 .env.json
->>>>>>> main
+
+.cursorrules
+.cursor
+.specstory

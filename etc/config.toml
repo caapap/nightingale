@@ -72,6 +72,9 @@ DefaultRoles = ["Standard"]
 # open RSA
 OpenRSA = false
 
+[HTTP.TokenAuth]
+Enable = true
+
 [DB]
 # mysql postgres sqlite
 DBType = "sqlite"
